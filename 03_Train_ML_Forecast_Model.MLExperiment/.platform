@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "MLExperiment",
+    "displayName": "03_Train_ML_Forecast_Model"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "e0241ee5-fdd6-a482-4c29-4f92866e5f3d"
+  }
+}

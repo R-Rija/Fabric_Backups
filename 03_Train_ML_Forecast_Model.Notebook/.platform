@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "03_Train_ML_Forecast_Model"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "1e252059-5014-b469-4e14-5e81e9aef87c"
+  }
+}
