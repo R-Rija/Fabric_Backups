@@ -1,0 +1,205 @@
+table 'Calculation group'
+	lineageTag: 065af1d3-6c63-4f53-b304-4610d66dc32b
+
+	calculationGroup
+
+		calculationItem TD = SELECTEDMEASURE()
+
+			formatStringDefinition = if (SELECTEDMEASURE() = [UnitSold],"#,##0.00;-#,##0.00;#,##0.00")
+
+		calculationItem LW =
+				
+				VAR TD = SELECTEDMEASURE()
+				RETURN
+				IF(
+				    HASONEVALUE(Time_Table[TimeFrame]),
+				    IF(
+				        ISBLANK(TD),
+				        BLANK(),
+				        CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+				    ),
+				    SUMX(
+				        VALUES(Time_Table[TimeFrame]),
+				        VAR RowTD = SELECTEDMEASURE()
+				        RETURN
+				        IF(
+				            ISBLANK(RowTD),
+				            BLANK(),
+				            CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+				        )
+				    )
+				)
+
+		calculationItem vLW =
+				
+				VAR TD = SELECTEDMEASURE()
+				RETURN
+				IF(
+				    HASONEVALUE(Time_Table[TimeFrame]),
+				    IF(
+				        ISBLANK(TD),
+				        BLANK(),
+				        TD -
+				        CALCULATE(
+				            SELECTEDMEASURE(),
+				            REMOVEFILTERS(Date_Dimension[Date]),
+				            DATEADD(Date_Dimension[Date], -7, DAY)
+				        )
+				    ),
+				    SUMX(
+				        VALUES(Time_Table[TimeFrame]),
+				        VAR RowTD = SELECTEDMEASURE()
+				        RETURN
+				            IF(
+				                ISBLANK(RowTD),
+				                BLANK(),
+				                VAR RowLW =
+				                    CALCULATE(
+				                        SELECTEDMEASURE(),
+				                        REMOVEFILTERS(Date_Dimension),
+				                        DATEADD(Date_Dimension[Date], -7, DAY)
+				                    )
+				                RETURN
+				                    COALESCE(RowTD, 0) - COALESCE(RowLW, 0)
+				            )
+				    )
+				)
+
+		calculationItem 'vLW %' = ```
+				
+				VAR TD = SELECTEDMEASURE()
+				RETURN
+				IF(
+				    ISBLANK(TD), 
+				    BLANK(), 
+				    VAR LW = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+				    VAR TotalTD = CALCULATE(SELECTEDMEASURE(), ALLSELECTED(Time_Table))
+				    VAR TotalLW = CALCULATE(SELECTEDMEASURE(), ALLSELECTED(Time_Table), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+				    
+				    RETURN
+				    IF(
+				        HASONEVALUE(Time_Table[TimeFrame]),
+				        DIVIDE(TD - LW, LW),
+				        DIVIDE(TotalTD - TotalLW, TotalLW)
+				    )
+				)
+				```
+
+			formatStringDefinition = "🔼 0.00%;🔽 -0.00%;0.00%"
+
+		calculationItem 'Avg.L4W' =
+				
+				VAR TD = SELECTEDMEASURE()
+				RETURN
+				IF(
+				    HASONEVALUE(Time_Table[TimeFrame]),
+				    IF(
+				        ISBLANK(TD),
+				        BLANK(),
+				        VAR w1 = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+				        VAR w2 = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -14, DAY))
+				        VAR w3 = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -21, DAY))
+				        VAR w4 = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -28, DAY))
+				        RETURN DIVIDE(w1 + w2 + w3 + w4, 4)
+				    ),
+				    SUMX(
+				        VALUES(Time_Table[TimeFrame]),
+				        VAR RowTD = SELECTEDMEASURE()
+				        RETURN
+				        IF(
+				            ISBLANK(RowTD),
+				            BLANK(),
+				            VAR RowW1 = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+				            VAR RowW2 = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -14, DAY))
+				            VAR RowW3 = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -21, DAY))
+				            VAR RowW4 = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -28, DAY))
+				            RETURN DIVIDE(COALESCE(RowW1, 0) + COALESCE(RowW2, 0) + COALESCE(RowW3, 0) + COALESCE(RowW4, 0), 4)
+				        )
+				    )
+				)
+
+		calculationItem vL4W =
+				
+				VAR TD = SELECTEDMEASURE()
+				RETURN
+				IF(
+				    HASONEVALUE(Time_Table[TimeFrame]),
+				    IF(
+				        ISBLANK(TD),
+				        BLANK(),
+				        VAR w1 = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+				        VAR w2 = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -14, DAY))
+				        VAR w3 = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -21, DAY))
+				        VAR w4 = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -28, DAY))
+				        VAR avgl4w = DIVIDE(w1 + w2 + w3 + w4, 4)
+				        RETURN TD - avgl4w
+				    ),
+				    SUMX(
+				        VALUES(Time_Table[TimeFrame]),
+				        VAR RowTD = SELECTEDMEASURE()
+				        RETURN
+				        IF(
+				            ISBLANK(RowTD),
+				            BLANK(),
+				            VAR RowW1 = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+				            VAR RowW2 = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -14, DAY))
+				            VAR RowW3 = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -21, DAY))
+				            VAR RowW4 = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -28, DAY))
+				            VAR RowAvg = DIVIDE(COALESCE(RowW1, 0) + COALESCE(RowW2, 0) + COALESCE(RowW3, 0) + COALESCE(RowW4, 0), 4)
+				            RETURN RowTD - RowAvg
+				        )
+				    )
+				)
+
+		calculationItem 'vL4W %' = ```
+				
+				VAR TD = SELECTEDMEASURE()
+				RETURN
+				IF(
+				    ISBLANK(TD), 
+				    BLANK(), 
+				    VAR w1 = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+				    VAR w2 = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -14, DAY))
+				    VAR w3 = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -21, DAY))
+				    VAR w4 = CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -28, DAY))
+				    VAR AvgL4W = DIVIDE(COALESCE(w1,0) + COALESCE(w2,0) + COALESCE(w3,0) + COALESCE(w4,0), 4)
+				
+				    RETURN
+				    IF(
+				        HASONEVALUE(Time_Table[TimeFrame]),
+				        DIVIDE(TD - AvgL4W, AvgL4W),
+				        DIVIDE(
+				            CALCULATE(SELECTEDMEASURE(), ALLSELECTED(Time_Table)) - CALCULATE(AvgL4W, ALLSELECTED(Time_Table)),
+				            CALCULATE(AvgL4W, ALLSELECTED(Time_Table))
+				        )
+				    )
+				)
+				```
+
+			formatStringDefinition = "🔼 0.00%;🔽 -0.00%;0.00%"
+
+	column Metric
+		dataType: string
+		lineageTag: 42cec73b-c1d6-4119-9e3e-de94d13b0c87
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		formatString: 0
+		lineageTag: fbfbf22a-ae65-4f63-9895-5d9cc9d19448
+		summarizeBy: sum
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Calculation group column Hierarchy'
+		lineageTag: 5b2cff77-3239-43b0-b104-3d28d656219e
+
+		level Metric
+			lineageTag: c2a44ce1-4307-4cba-98c4-01f3651da992
+			column: Metric
+

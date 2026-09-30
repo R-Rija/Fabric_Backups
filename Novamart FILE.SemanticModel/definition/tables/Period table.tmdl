@@ -1,0 +1,19 @@
+table 'Period table'
+	isHidden
+	lineageTag: 4b87aebf-377a-4279-91ae-d8c38a969cce
+
+	column Period
+		isHidden
+		lineageTag: fb712abd-5ea3-462d-9ff0-8ddea4e27b00
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Period]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Period table' = calculated
+		mode: import
+		source = DATATABLE("Period",STRING,{{"TD"},{"LW"},{"vLW"},{"vLW%"},{"Avg.L4W"},{"vL4W"},{"vL4W%"}})
+
+	annotation PBI_Id = f285c6dc357243859eb40acf0fed0752
+

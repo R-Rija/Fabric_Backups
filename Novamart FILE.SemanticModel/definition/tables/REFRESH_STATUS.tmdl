@@ -1,0 +1,58 @@
+table REFRESH_STATUS
+	isHidden
+	lineageTag: 7e3aacc8-691f-454e-bc96-a130c88c05fb
+
+	column RefreshTime
+		dataType: string
+		lineageTag: e5238b7f-2f8b-4df1-9e7a-c919efaa328a
+		summarizeBy: none
+		sourceColumn: RefreshTime
+
+		annotation SummarizationSetBy = Automatic
+
+	column DataAvailableTill
+		dataType: string
+		lineageTag: 8ec17a3a-19ac-40e4-b926-f94c13835e42
+		summarizeBy: none
+		sourceColumn: DataAvailableTill
+
+		annotation SummarizationSetBy = Automatic
+
+	column RefreshNote
+		dataType: string
+		lineageTag: a1c976c4-5a4d-4a9e-8ddf-a7f828e360dc
+		summarizeBy: none
+		sourceColumn: RefreshNote
+
+		annotation SummarizationSetBy = Automatic
+
+	partition REFRESH_STATUS = m
+		mode: import
+		source =
+				let
+				    Source = SharePoint.Files("https://gwcteq-my.sharepoint.com/personal/rija_ravichandran_gwcdata_ai", [ApiVersion = 15]),
+				
+				    File = Source{[Name = "RefreshStatus.csv"]}[Content],
+				
+				    REFRESH_STATUS_Table =
+				        Table.PromoteHeaders(
+				            Csv.Document(
+				                File,
+				                [
+				                    Delimiter = ",",
+				                    Encoding = 65001,
+				                    QuoteStyle = QuoteStyle.Csv
+				                ]
+				            ),
+				            [PromoteAllScalars = true]
+				        )
+				
+				in
+				    REFRESH_STATUS_Table
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

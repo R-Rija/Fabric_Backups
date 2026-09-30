@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Novamart FILE"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "016dd508-750d-93ed-4a6a-823eab022023"
+  }
+}

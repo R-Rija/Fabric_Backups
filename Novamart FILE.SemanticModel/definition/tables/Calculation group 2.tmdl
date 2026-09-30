@@ -1,0 +1,35 @@
+table 'Calculation group 2'
+	lineageTag: 6a9140d1-383f-4d0e-8540-a00ffb5d212b
+
+	calculationGroup
+		precedence: 1
+
+		calculationItem TD = SELECTEDMEASURE()
+
+		calculationItem LW =
+				
+				var TD = SELECTEDMEASURE()
+				RETURN
+				if( isblank(TD),blank(),
+				CALCULATE(SELECTEDMEASURE(),
+				REMOVEFILTERS(Date_Dimension[Date])
+				,DATEADD(Date_Dimension[Date],-7,DAY)))
+
+	column 'Trend chart'
+		dataType: string
+		lineageTag: b738e6d8-3160-439f-a300-9aefc0514b8e
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		formatString: 0
+		lineageTag: de6cbd3f-703d-4e22-81c0-410b807a9964
+		summarizeBy: sum
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+

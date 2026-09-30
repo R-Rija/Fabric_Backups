@@ -1,0 +1,30 @@
+relationship 046494ae-136d-8feb-f323-f036ae4948bf
+	fromColumn: FACT_SALES.'Bucket ID'
+	toColumn: Time_Table.'Bucket ID'
+
+relationship ea8e8f66-1cd3-4154-b313-cc94b667698a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Last_Refresh.'Date Last Refreshed'
+	toColumn: LocalDateTable_3636ceee-42ef-4fc1-85fc-7ce5e5a4dcc2.Date
+
+relationship AutoDetected_7ca1a5fe-cf99-4004-aabd-fc56bc9e5bb5
+	fromColumn: FACT_SALES.CUSTOMERID
+	toColumn: DIM_CUSTOMERS.CUSTOMERID
+
+relationship AutoDetected_fcc0ca6d-9996-4cb2-acd9-bcfce37b12ab
+	fromColumn: FACT_SALES.PRODUCTID
+	toColumn: DIM_PRODUCT.PRODUCTID
+
+relationship AutoDetected_08f7fa09-a659-4bbf-a67d-d2d5daf24eeb
+	fromColumn: FACT_SALES.STOREID
+	toColumn: DIM_STORE.STOREID
+
+relationship 47b60184-3eda-4ba4-bc24-0a82f2be7b35
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FACT_SALES.TIMESTAMP
+	toColumn: LocalDateTable_e41bc3cc-d543-4509-ba70-f7520db1c2f3.Date
+
+relationship 494b0f59-83af-fe5d-3320-16b8ed481343
+	fromColumn: FACT_SALES.DATE
+	toColumn: Date_Dimension.Date
+

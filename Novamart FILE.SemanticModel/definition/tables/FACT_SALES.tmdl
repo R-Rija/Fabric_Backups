@@ -1,0 +1,353 @@
+table FACT_SALES
+	lineageTag: 2cdc9529-250d-49af-954f-aa3055a2b582
+
+	measure Revenue = sum(FACT_SALES[SALESAMOUNT])
+		displayFolder: Basic measure
+		lineageTag: 8048a0a8-58cc-42cb-b92b-801f0e35392c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Transaction Count' = DISTINCTCOUNT(FACT_SALES[TRANSACTIONID])
+		formatString: 0
+		displayFolder: Basic measure
+		lineageTag: c82eb283-9f40-4c75-aedc-b0b94b51e9ca
+
+	measure 'Active Customer' = DISTINCTCOUNT(FACT_SALES[CUSTOMERID])
+		formatString: 0
+		displayFolder: Basic measure
+		lineageTag: 152223d3-033e-49dd-a95a-400e6631ea30
+
+	measure ASP = DIVIDE([Revenue],sum(FACT_SALES[UNITS]))
+		displayFolder: Basic measure
+		lineageTag: aaa99eb1-415d-4e6d-8030-90c56543c907
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure IPB = DIVIDE(SUM(FACT_SALES[UNITS]), [Transaction Count])
+		displayFolder: Basic measure
+		lineageTag: 373acf33-b593-41f3-8227-233883126aff
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Annual Spend' = DIVIDE([Revenue],[Active Customer])
+		displayFolder: Basic measure
+		lineageTag: 65fdd59c-9dbe-41c0-81ce-16c0d529dd5d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Basket Value' = DIVIDE([Revenue],[Transaction Count])
+		displayFolder: Basic measure
+		lineageTag: a436dcd4-9c00-4ec1-bd82-747ad56afc2b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg frequency' = DIVIDE([Transaction Count],[Active Customer])
+		displayFolder: Basic measure
+		lineageTag: 2edcffac-d88a-4110-8247-e81ee755a1c0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Customer Unites' = DIVIDE(SUM(FACT_SALES[UNITPRICE]),[Active Customer])
+		displayFolder: Basic measure
+		lineageTag: 3b379ede-7642-4820-aa38-8551b99e2413
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure UnitSold = sum(FACT_SALES[UNITS])
+		formatString: #,0
+		displayFolder: Basic measure
+		lineageTag: b7d90a41-976c-4d32-a28f-c83658de6a4d
+
+	measure 'Net Sales' = sumx(FACT_SALES,FACT_SALES[UNITPRICE]* FACT_SALES[UNITS])
+		displayFolder: Basic measure
+		lineageTag: 04e1d2da-f203-4a1e-ae77-367165c4933e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Discount' = [Net Sales] - [Revenue]
+		displayFolder: Basic measure
+		lineageTag: 44a11df2-e3b0-405b-8b7a-e725010bdb66
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'AVG asp' = AVERAGE(DIM_PRODUCT[ASP])
+		displayFolder: Basic measure
+		lineageTag: 35b2c7a1-00c3-478a-9e72-ebd18a0522d3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'rev share subcategory %' = DIVIDE([Revenue],CALCULATE([Revenue],all(DIM_PRODUCT[SUBCATEGORY])))
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Basic measure
+		lineageTag: e1b3c62d-39f6-474b-b1e2-f6d7bd75b674
+
+	column 'Bucket ID' = int(HOUR(FACT_SALES[TIMESTAMP])/3)
+		formatString: 0
+		lineageTag: 2c554844-6946-4698-9239-5257c129457f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey = year(FACT_SALES[DATE])* 10000 + MONTH(FACT_SALES[DATE])*100 + DAY(FACT_SALES[DATE])
+		dataType: int64
+		formatString: 0
+		lineageTag: 2c35271b-0b48-4b83-ab16-e87dbea4e9c3
+		summarizeBy: count
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Period Bucket' =
+			
+			VAR hr = hour(FACT_SALES[TIMESTAMP])
+			RETURN
+			SWITCH(TRUE(),
+			HR<3,"00 AM - 03 AM",
+			HR<6,"03 AM - 06 AM",
+			HR<9,"06 AM - 09 AM",
+			HR<12,"09 AM - 12 PM",
+			HR<15,"12 PM - 03 PM",
+			HR<18,"03 PM - 06 PM",
+			HR<21,"06 PM - 09 PM","09 PM - 12 AM"
+			)
+		lineageTag: e69c8a2b-14ca-4794-a519-c3dc1bbd30d2
+		summarizeBy: none
+		sortByColumn: 'Period sort'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Period sort' =
+			
+			VAR hr = hour(FACT_SALES[TIMESTAMP])
+			RETURN
+			SWITCH(TRUE(),
+			hr < 3, 1,
+			hr < 6, 2,
+			hr < 9 , 3,
+			hr < 12, 4,
+			hr < 15, 5,
+			hr < 18, 6,
+			hr < 21, 7,
+			8)
+		formatString: 0
+		lineageTag: 5f0ecdf8-1eee-40e1-b15e-f9fc5e15c5c7
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column SALESID
+		dataType: string
+		lineageTag: 4a8d88fd-9ec3-43cd-853a-8430fd908f49
+		summarizeBy: none
+		sourceColumn: SALESID
+
+		annotation SummarizationSetBy = Automatic
+
+	column TRANSACTIONID
+		dataType: string
+		lineageTag: b07054e1-bfc4-4f95-8d55-41509756e8dd
+		summarizeBy: none
+		sourceColumn: TRANSACTIONID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CUSTOMERID
+		dataType: string
+		lineageTag: 91801b74-e252-4006-8b4e-a1ae749e7b53
+		summarizeBy: none
+		sourceColumn: CUSTOMERID
+
+		annotation SummarizationSetBy = Automatic
+
+	column PRODUCTID
+		dataType: string
+		lineageTag: 05f52608-404a-4827-94ac-29b997063e3c
+		summarizeBy: none
+		sourceColumn: PRODUCTID
+
+		annotation SummarizationSetBy = Automatic
+
+	column STOREID
+		dataType: string
+		lineageTag: 79cd5484-1af9-4b07-b919-c3e7c81be5f9
+		summarizeBy: none
+		sourceColumn: STOREID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CHANNELID
+		dataType: string
+		lineageTag: d84368d3-2252-4c56-8576-23e92c36b8ee
+		summarizeBy: none
+		sourceColumn: CHANNELID
+
+		annotation SummarizationSetBy = Automatic
+
+	column PAYMENTID
+		dataType: string
+		lineageTag: 8690a124-f198-4f41-becd-7266b050b98a
+		summarizeBy: none
+		sourceColumn: PAYMENTID
+
+		annotation SummarizationSetBy = Automatic
+
+	column DATE
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 517ce0ca-7d4f-4a38-99ca-f6a5e255a788
+		summarizeBy: none
+		sourceColumn: DATE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column TIMESTAMP
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 9c8312df-96ce-46f1-8304-c05e4c6fae1e
+		summarizeBy: none
+		sourceColumn: TIMESTAMP
+
+		variation Variation
+			isDefault
+			relationship: 47b60184-3eda-4ba4-bc24-0a82f2be7b35
+			defaultHierarchy: LocalDateTable_e41bc3cc-d543-4509-ba70-f7520db1c2f3.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column UNITS
+		dataType: int64
+		formatString: 0
+		lineageTag: 314cfc6a-affb-4592-9a11-4e82b63563cf
+		summarizeBy: sum
+		sourceColumn: UNITS
+
+		annotation SummarizationSetBy = Automatic
+
+	column UNITPRICE
+		dataType: double
+		lineageTag: 5a2fce5c-a8df-44f5-b5d9-176f1fe101e6
+		summarizeBy: sum
+		sourceColumn: UNITPRICE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DISCOUNTPCT
+		dataType: int64
+		formatString: 0
+		lineageTag: 64f7364c-c49c-4998-a872-420a524768a5
+		summarizeBy: sum
+		sourceColumn: DISCOUNTPCT
+
+		annotation SummarizationSetBy = Automatic
+
+	column SALESAMOUNT
+		dataType: double
+		formatString: 0.00
+		lineageTag: b489910a-d59c-4444-84ee-935a1fe3df40
+		summarizeBy: sum
+		sourceColumn: SALESAMOUNT
+
+		annotation SummarizationSetBy = Automatic
+
+	column BRANDNAME
+		dataType: string
+		lineageTag: af175bf0-4df1-478a-bfe5-7b2a387f9c93
+		summarizeBy: none
+		sourceColumn: BRANDNAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column CHANNELNAME
+		dataType: string
+		lineageTag: dc194177-2576-4593-ba77-40d4cd4c7b34
+		summarizeBy: none
+		sourceColumn: CHANNELNAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column PAYMENTMETHODNAME
+		dataType: string
+		lineageTag: e276f8a7-61d2-417a-9ba1-c6c041c220af
+		summarizeBy: none
+		sourceColumn: PAYMENTMETHODNAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column STORESTATE
+		dataType: string
+		lineageTag: 964d35e3-0d82-411e-9d16-3c31307529b0
+		summarizeBy: none
+		sourceColumn: STORESTATE
+
+		annotation SummarizationSetBy = Automatic
+
+	column STORERBU
+		dataType: string
+		lineageTag: 251c1d78-7c9d-4917-af90-8b18a750d00b
+		summarizeBy: none
+		sourceColumn: STORERBU
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FACT_SALES = m
+		mode: import
+		source =
+				let
+				    Source = SharePoint.Files(
+				        "https://gwcteq-my.sharepoint.com/personal/rija_ravichandran_gwcdata_ai",
+				        [ApiVersion = 15]
+				    ),
+				    FilteredFiles =
+				        Table.SelectRows(
+				            Source,
+				            each [Name] = "FactSales.xlsx"
+				                and [Folder Path] = "https://gwcteq-my.sharepoint.com/personal/rija_ravichandran_gwcdata_ai/Documents/original_nova_mart/"
+				        ),
+				    File = FilteredFiles{0}[Content],
+				    Excel_Source = Excel.Workbook(File, true),
+				    #"Navigated_Sheet" = Excel_Source{0}[Data],
+				    #"Renamed Columns" =
+				        Table.RenameColumns(
+				            Navigated_Sheet,
+				            {
+				                {"ChannelID","CHANNELID"},
+				                {"PaymentID","PAYMENTID"},
+				                {"Date","DATE"},
+				                {"Timestamp","TIMESTAMP"},
+				                {"Units","UNITS"},
+				                {"UnitPrice","UNITPRICE"},
+				                {"DiscountPct","DISCOUNTPCT"},
+				                {"SalesAmount","SALESAMOUNT"},
+				                {"BrandName","BRANDNAME"},
+				                {"ChannelName","CHANNELNAME"},
+				                {"PaymentMethodName","PAYMENTMETHODNAME"},
+				                {"StoreState","STORESTATE"},
+				                {"StoreRBU","STORERBU"},
+				                {"ProductID","PRODUCTID"},
+				                {"SalesID","SALESID"},
+				                {"StoreID","STOREID"},
+				                {"CustomerID","CUSTOMERID"},
+				                {"TransactionID","TRANSACTIONID"}
+				            },
+				            MissingField.Ignore
+				        ),
+				    #"Filtered Rows" =
+				        Table.SelectRows(
+				            #"Renamed Columns",
+				            each true
+				        ),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Filtered Rows",{{"TIMESTAMP", type datetime}, {"UNITPRICE", type number}, {"UNITS", Int64.Type}, {"DISCOUNTPCT", Int64.Type}, {"SALESAMOUNT", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

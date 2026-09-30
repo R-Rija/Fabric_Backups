@@ -1,0 +1,80 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "27eaabbd177a0a8bc050",
+  "displayName": "Trend page",
+  "displayOption": "FitToPage",
+  "height": 900,
+  "width": 1400,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "1f1598d09eb5a44e114e",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Metric Selected"
+              }
+            },
+            "Property": "Metric Selected"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "Drillthrough"
+      }
+    ]
+  },
+  "pageBinding": {
+    "name": "0f93897904a9775cd12b",
+    "type": "Default",
+    "parameters": [
+      {
+        "name": "aaee15df1ac664b96a13",
+        "boundFilter": "1f1598d09eb5a44e114e",
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Metric Selected"
+              }
+            },
+            "Property": "Metric Selected"
+          }
+        }
+      }
+    ]
+  },
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#CCCCCC'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "78D"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visualInteractions": [
+    {
+      "source": "b7318da04612ca492481",
+      "target": "b070a339d20407c7eb10",
+      "type": "DataFilter"
+    }
+  ]
+}

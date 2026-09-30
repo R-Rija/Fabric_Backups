@@ -1,0 +1,114 @@
+table RFM_Table
+	lineageTag: ef53d089-aa30-41c9-96a9-8ddb5199d61d
+
+	measure M_RFM_Customer_Count = DISTINCTCOUNT('RFM_Table'[CUSTOMERID])
+		lineageTag: cfb50670-6550-40ff-8592-48c1ff57d420
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure M_RFM_Total_Revenue = SUM('RFM_Table'[MonetaryValue])
+		lineageTag: a11665a1-7b1d-442a-befc-5457ad44a2d8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure M_RFM_Avg_Frequency = AVERAGE('RFM_Table'[FrequencyCount])
+		lineageTag: 6d99cd48-10b5-48db-bb03-6d74625d053b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CUSTOMERID
+		lineageTag: 6f55a966-879b-4a70-aebc-919d64bd9215
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: FACT_SALES[CUSTOMERID]
+
+		annotation SummarizationSetBy = Automatic
+
+	column RecencyDays
+		formatString: 0
+		lineageTag: aa97bb89-7123-4e3a-962c-f2b8e77e3573
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [RecencyDays]
+
+		annotation SummarizationSetBy = Automatic
+
+	column FrequencyCount
+		formatString: 0
+		lineageTag: 7246b327-a947-4d39-8a07-e5efa56268ef
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [FrequencyCount]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonetaryValue
+		lineageTag: c4116385-ce22-46ed-a8b7-1bc94d371ba4
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [MonetaryValue]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column R_Score =
+			
+			VAR CustomerRank = RANKX(RFM_Table, RFM_Table[RecencyDays], , ASC, Dense)
+			VAR MaxRank = MAXX(ALL(RFM_Table), RANKX(RFM_Table, RFM_Table[RecencyDays], , ASC, Dense))
+			RETURN
+			MIN(5, CEILING((CustomerRank / MaxRank) * 5, 1))
+		formatString: 0
+		lineageTag: 8eb74d56-7531-4fc0-85dc-c94683921086
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column F_Score =
+			
+			VAR CustomerRank = RANKX(RFM_Table, RFM_Table[FrequencyCount], , DESC, Dense)
+			VAR MaxRank = MAXX(ALL(RFM_Table), RANKX(RFM_Table, RFM_Table[FrequencyCount], , DESC, Dense))
+			RETURN
+			MIN(5, CEILING((CustomerRank / MaxRank) * 5, 1))
+		formatString: 0
+		lineageTag: 6dcc9750-9cc7-48b9-b23d-3a9f4828b732
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column RFM_Segment = ```
+			
+			SWITCH(
+			    TRUE(),
+			    RFM_Table[R_Score] >= 4 && RFM_Table[F_Score] >= 4, "Champions",
+			    RFM_Table[R_Score] >= 3 && RFM_Table[F_Score] >= 3, "Loyal Customers",
+			    RFM_Table[R_Score] >= 4 && RFM_Table[F_Score] <= 2, "New Customers",
+			    RFM_Table[R_Score] <= 2 && RFM_Table[F_Score] >= 3, "At Risk",
+			    RFM_Table[R_Score] <= 2 && RFM_Table[F_Score] <= 2, "Lost Customers",
+			    
+			    "About to Sleep"
+			)
+			```
+		lineageTag: e778aa4c-686c-4cec-b8cf-be08cdeb9448
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition RFM_Table = calculated
+		mode: import
+		source = ```
+				
+				VAR MaxDatasetDate = CALCULATE(MAX(FACT_SALES[Date]), ALL(FACT_SALES))
+				VAR CustomerSummary = 
+				    SUMMARIZE(
+				        FACT_SALES,
+				        FACT_SALES[CUSTOMERID],
+				        "RecencyDays", DATEDIFF(MAX(FACT_SALES[Date]), MaxDatasetDate, DAY),
+				        "FrequencyCount", DISTINCTCOUNT(FACT_SALES[TRANSACTIONID]),
+				        "MonetaryValue", SUM(FACT_SALES[SALESAMOUNT]))
+				RETURN 
+				    CustomerSummary
+				```
+
+	annotation PBI_Id = 5a88f216c58c46cd8063ffb95aea1081
+

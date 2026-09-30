@@ -1,0 +1,78 @@
+table DIM_STORE
+	lineageTag: 2c1cfc28-0835-489f-9015-dbfdaf2a732d
+
+	column RBU
+		dataType: string
+		lineageTag: 5949af5a-405d-45e8-870f-03cbfbcb0855
+		summarizeBy: none
+		sourceColumn: RBU
+
+		annotation SummarizationSetBy = Automatic
+
+	column STOREID
+		dataType: string
+		lineageTag: 2211ebfd-cde5-485b-b730-4db22f6f86b6
+		summarizeBy: none
+		sourceColumn: STOREID
+
+		annotation SummarizationSetBy = Automatic
+
+	column STORENAME
+		dataType: string
+		lineageTag: 7abe56ef-fd1a-4e01-9ac5-f736a44fe3ca
+		summarizeBy: none
+		sourceColumn: STORENAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATE
+		dataType: string
+		lineageTag: 84387c3c-a0a4-4649-81b2-26646e950b88
+		summarizeBy: none
+		sourceColumn: STATE
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DIM_STORE = m
+		mode: import
+		source =
+				let
+				    Source = SharePoint.Files(
+				        "https://gwcteq-my.sharepoint.com/personal/rija_ravichandran_gwcdata_ai",
+				        [ApiVersion = 15]
+				    ),
+				
+				    File = Source{[Name = "DimStore.csv"]}[Content],
+				
+				    DIM_STORE_Table =
+				        Table.PromoteHeaders(
+				            Csv.Document(
+				                File,
+				                [
+				                    Delimiter = ",",
+				                    Encoding = 65001,
+				                    QuoteStyle = QuoteStyle.Csv
+				                ]
+				            ),
+				            [PromoteAllScalars = true]
+				        ),
+				
+				    #"Renamed Columns" =
+				        Table.RenameColumns(
+				            DIM_STORE_Table,
+				            {
+				                {"StoreID","STOREID"},
+				                {"StoreName","STORENAME"},
+				                {"State","STATE"},
+				                {"RBU","RBU"}
+				            },
+				            MissingField.Ignore
+				        )
+				
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

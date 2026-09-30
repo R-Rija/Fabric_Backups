@@ -1,0 +1,63 @@
+table DIM_CHANNEL
+	lineageTag: b0deeb34-8303-40aa-9094-8445fe6b66f7
+
+	column CHANNELID
+		dataType: string
+		lineageTag: 14f52997-da81-42fc-8879-9d30ac2d5258
+		summarizeBy: none
+		sourceColumn: CHANNELID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CHANNEL
+		dataType: string
+		lineageTag: f4effd71-4daa-49fa-8731-c4a430d6cc3d
+		summarizeBy: none
+		sourceColumn: CHANNEL
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DIM_CHANNEL = m
+		mode: import
+		source =
+				let
+				    Source = SharePoint.Files(
+				        "https://gwcteq-my.sharepoint.com/personal/rija_ravichandran_gwcdata_ai",
+				        [ApiVersion = 15]
+				    ),
+				
+				    File = Source{[Name = "DimChannel.csv"]}[Content],
+				
+				    CSV =
+				        Csv.Document(
+				            File,
+				            [
+				                Delimiter = ",",
+				                Encoding = 65001,
+				                QuoteStyle = QuoteStyle.Csv
+				            ]
+				        ),
+				
+				    PromotedHeaders =
+				        Table.PromoteHeaders(
+				            CSV,
+				            [PromoteAllScalars = true]
+				        ),
+				
+				    #"Renamed Columns" =
+				        Table.RenameColumns(
+				            PromotedHeaders,
+				            {
+				                {"ChannelID","CHANNELID"},
+				                {"Channel","CHANNEL"}
+				            },
+				            MissingField.Ignore
+				        )
+				
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

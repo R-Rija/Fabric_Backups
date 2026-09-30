@@ -1,0 +1,264 @@
+table product_catalog
+	lineageTag: bf88eba9-524c-4382-ac39-fe875447f3c4
+
+	column ProductID
+		dataType: string
+		lineageTag: 1b391d4f-011d-45fe-8bcc-47962001979d
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductName
+		dataType: string
+		lineageTag: 285d1d46-d05a-42dd-9ee8-64bd0cbe343d
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Brand
+		dataType: string
+		lineageTag: 87fb98fa-6984-4bec-90f2-73083e555634
+		summarizeBy: none
+		sourceColumn: Brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: d3b167f4-2327-46e8-ba20-59892fa187ff
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column SubCategory
+		dataType: string
+		lineageTag: 2c96cd4e-709a-4764-9bdb-1733d1135fdb
+		summarizeBy: none
+		sourceColumn: SubCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		lineageTag: ca712d4f-5d68-4c67-bcbb-32d961cf948c
+		summarizeBy: none
+		sourceColumn: Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column Price
+		dataType: int64
+		formatString: 0
+		lineageTag: 9578785c-b4c1-41ab-8873-0aedff4ecd2a
+		summarizeBy: sum
+		sourceColumn: Price
+
+		annotation SummarizationSetBy = Automatic
+
+	column CostPrice
+		dataType: int64
+		formatString: 0
+		lineageTag: 97026774-009b-4f70-ad83-3ee4c48aabcc
+		summarizeBy: sum
+		sourceColumn: CostPrice
+
+		annotation SummarizationSetBy = Automatic
+
+	column DiscountPercent
+		dataType: int64
+		formatString: 0
+		lineageTag: b178e39f-82bf-4d05-963d-2d220c1643d6
+		summarizeBy: sum
+		sourceColumn: DiscountPercent
+
+		annotation SummarizationSetBy = Automatic
+
+	column DiscountedPrice
+		dataType: int64
+		formatString: 0
+		lineageTag: 74e394fa-4ee5-47c8-a8a8-2f467b6de1bd
+		summarizeBy: sum
+		sourceColumn: DiscountedPrice
+
+		annotation SummarizationSetBy = Automatic
+
+	column GSTRate
+		dataType: int64
+		formatString: 0
+		lineageTag: 5af6ed2b-dc41-4a62-b2a1-e470a4e881b6
+		summarizeBy: sum
+		sourceColumn: GSTRate
+
+		annotation SummarizationSetBy = Automatic
+
+	column StockQuantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 2bab910f-0c67-4537-9ed1-676fa8c2451d
+		summarizeBy: sum
+		sourceColumn: StockQuantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReorderLevel
+		dataType: int64
+		formatString: 0
+		lineageTag: 6cbf52f7-ca08-4f06-b297-028de79e87af
+		summarizeBy: sum
+		sourceColumn: ReorderLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	column Supplier
+		dataType: string
+		lineageTag: e9cbba4a-d084-4d17-ba19-b4dba3655c02
+		summarizeBy: none
+		sourceColumn: Supplier
+
+		annotation SummarizationSetBy = Automatic
+
+	column WarehouseLocation
+		dataType: string
+		lineageTag: 8e6fc98b-861f-471d-9c76-f815fb58b7e8
+		summarizeBy: none
+		sourceColumn: WarehouseLocation
+
+		annotation SummarizationSetBy = Automatic
+
+	column Color
+		dataType: string
+		lineageTag: e385ea42-b8ec-4adb-983d-02296b0c1a91
+		summarizeBy: none
+		sourceColumn: Color
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeightKg
+		dataType: double
+		lineageTag: ec4f76bc-c7c4-4635-93a1-1e6bb7763232
+		summarizeBy: sum
+		sourceColumn: WeightKg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Material
+		dataType: string
+		lineageTag: 431c3401-aa18-4e6e-a2e2-59326d40fd43
+		summarizeBy: none
+		sourceColumn: Material
+
+		annotation SummarizationSetBy = Automatic
+
+	column CountryOfOrigin
+		dataType: string
+		lineageTag: 94295b62-e46e-47d3-8d18-4d291e6e09b7
+		summarizeBy: none
+		sourceColumn: CountryOfOrigin
+
+		annotation SummarizationSetBy = Automatic
+
+	column WarrantyMonths
+		dataType: int64
+		formatString: 0
+		lineageTag: 0fe3951f-3181-419b-ae59-5371a72e8686
+		summarizeBy: sum
+		sourceColumn: WarrantyMonths
+
+		annotation SummarizationSetBy = Automatic
+
+	column Rating
+		dataType: double
+		lineageTag: 1296759c-41a4-4072-a1ee-c03518e92257
+		summarizeBy: sum
+		sourceColumn: Rating
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column NumReviews
+		dataType: int64
+		formatString: 0
+		lineageTag: 31346a80-2756-447f-9bb1-398bb52b1246
+		summarizeBy: sum
+		sourceColumn: NumReviews
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsBestseller
+		dataType: string
+		lineageTag: 3eb9c46c-dd3d-4040-af50-5674683d7c61
+		summarizeBy: none
+		sourceColumn: IsBestseller
+
+		annotation SummarizationSetBy = Automatic
+
+	column SKU
+		dataType: string
+		lineageTag: 825d2f1c-031f-4e2a-b2ba-2ec819f0d5c9
+		summarizeBy: none
+		sourceColumn: SKU
+
+		annotation SummarizationSetBy = Automatic
+
+	column LaunchDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 2bf3e640-a6a1-484f-b193-8a3f8338664d
+		summarizeBy: none
+		sourceColumn: LaunchDate
+
+		variation Variation
+			isDefault
+			relationship: 29f19458-d1ef-4a21-a1a4-6f5853a778f4
+			defaultHierarchy: LocalDateTable_22e6e5a1-92d4-4d49-aba5-2235e8dd2ee6.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column LastRestockDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c1adba37-102b-47a2-9f75-ec70e9986a66
+		summarizeBy: none
+		sourceColumn: LastRestockDate
+
+		variation Variation
+			isDefault
+			relationship: b64bbfe8-0ea3-4090-875d-1f1b7da72c0f
+			defaultHierarchy: LocalDateTable_428fd527-2895-4da6-a52d-90e986e21048.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Index
+		dataType: int64
+		formatString: 0
+		lineageTag: efac0054-6a30-4ca9-92af-8934c82d0150
+		summarizeBy: sum
+		sourceColumn: Index
+
+		annotation SummarizationSetBy = Automatic
+
+	partition product_catalog = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\RijaRavichandran\Downloads\product_catalog.csv"),[Delimiter=",", Columns=26, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"ProductID", type text}, {"ProductName", type text}, {"Brand", type text}, {"Category", type text}, {"SubCategory", type text}, {"Description", type text}, {"Price", Int64.Type}, {"CostPrice", Int64.Type}, {"DiscountPercent", Int64.Type}, {"DiscountedPrice", Int64.Type}, {"GSTRate", Int64.Type}, {"StockQuantity", Int64.Type}, {"ReorderLevel", Int64.Type}, {"Supplier", type text}, {"WarehouseLocation", type text}, {"Color", type text}, {"WeightKg", type number}, {"Material", type text}, {"CountryOfOrigin", type text}, {"WarrantyMonths", Int64.Type}, {"Rating", type number}, {"NumReviews", Int64.Type}, {"IsBestseller", type text}, {"SKU", type text}, {"LaunchDate", type date}, {"LastRestockDate", type date}}),
+				    #"Added Index" = Table.AddIndexColumn(#"Changed Type", "Index", 1, 1, Int64.Type)
+				in
+				    #"Added Index"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

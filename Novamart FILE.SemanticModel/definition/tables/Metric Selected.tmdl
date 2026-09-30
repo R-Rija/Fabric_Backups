@@ -1,0 +1,56 @@
+table 'Metric Selected'
+	lineageTag: 16c604c8-91fe-40be-87cc-3fd10d10382d
+
+	column 'Metric Selected'
+		lineageTag: 5fbba9d1-30e7-4d6c-96e9-d870b0d831f0
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Metric Selected Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Metric Selected Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Metric Selected Fields'
+		isHidden
+		lineageTag: 268e70bd-b9f2-4680-8f74-2d2564b65cb5
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Metric Selected Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Metric Selected Order'
+		isHidden
+		formatString: 0
+		lineageTag: f6c7334c-548a-44dd-a26d-6b1aa39cc841
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Metric Selected' = calculated
+		mode: import
+		source =
+				{
+				    ("Active Customer", NAMEOF('FACT_SALES'[Active Customer]), 7),
+				    ("Annual spend", NAMEOF('FACT_SALES'[Annual Spend]), 1),
+				    ("ASP", NAMEOF('FACT_SALES'[ASP]), 2),
+				    ("Avg Customer Unites", NAMEOF('FACT_SALES'[Avg Customer Unites]), 9),
+				    ("Avg frequency", NAMEOF('FACT_SALES'[Avg frequency]), 4),
+				    ("Basket Value", NAMEOF('FACT_SALES'[Basket Value]), 5),
+				    ("IPB", NAMEOF('FACT_SALES'[IPB]), 6),
+				    ("Revenue", NAMEOF('FACT_SALES'[Revenue]), 0),
+				    ("Transaction Count", NAMEOF('FACT_SALES'[Transaction Count]), 8),
+				    ("Unit", NAMEOF('FACT_SALES'[UnitSold]), 3)
+				}
+
+	annotation PBI_Id = f74819213a5941179d81bc03309aa4a3
+

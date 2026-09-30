@@ -1,0 +1,45 @@
+table Last_Refresh
+	lineageTag: b026983e-b04f-4d13-a6ec-18fb92ae2c98
+
+	measure 'last Refresh Time' = VALUES(Last_Refresh[Date Last Refreshed])
+		lineageTag: 5e076f24-7f26-4b63-8aa1-b737064a7f82
+
+		formatStringDefinition = "0"
+
+	measure 'matrix color' =
+			var calcitem = SELECTEDVALUE('Calculation group'[Metric])
+			var value_ = SELECTEDMEASURE()
+			RETURN
+			SWITCH(
+			    TRUE(),calcitem in {"vLW %","vL4W%"} && Value_ < 0,"#FF0000",
+			    calcitem IN{"vLW%","vL4W"} && value_ >= 0,"#008000", "#000000")
+		lineageTag: 4094e11c-70b4-4e09-9d93-cfddfefdff7e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Date Last Refreshed'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 238c72df-b3f3-423d-a23d-451485845f92
+		summarizeBy: none
+		sourceColumn: Date Last Refreshed
+
+		variation Variation
+			isDefault
+			relationship: ea8e8f66-1cd3-4154-b313-cc94b667698a
+			defaultHierarchy: LocalDateTable_3636ceee-42ef-4fc1-85fc-7ce5e5a4dcc2.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Last_Refresh = m
+		mode: import
+		source =
+				let
+				    Source = #table(type table[Date Last Refreshed = datetime],{{DateTime.LocalNow()}})
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

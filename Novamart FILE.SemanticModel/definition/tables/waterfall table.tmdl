@@ -1,0 +1,17 @@
+table 'waterfall table'
+	lineageTag: 06bf2ec1-a8e6-4410-8331-e8d54623a19c
+
+	column component
+		lineageTag: 882a424d-21c9-49ba-aec8-b550f2eaa15a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [component]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'waterfall table' = calculated
+		mode: import
+		source = DATATABLE("component",STRING,{{"LW Revenue"},{"Volume effect"},{"Price effect"},{"Mix effect"},{"TD Revenue"}})
+
+	annotation PBI_Id = c23d35edaa474d3a96e7cfbd2a25b14d
+

@@ -1,0 +1,47 @@
+table 'Trend parameter'
+	lineageTag: defcf68b-d158-4c9f-a725-b85a7b7d8f2a
+
+	column 'Trend parameter'
+		lineageTag: 70b3b4a5-230e-445f-a1b7-c545438aff84
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Trend parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Trend parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Trend parameter Fields'
+		isHidden
+		lineageTag: c4934293-7603-4d0b-b139-d4528cf3baaa
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Trend parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Trend parameter Order'
+		isHidden
+		formatString: 0
+		lineageTag: 5f56d50f-a258-48ca-8f3d-522eb415b024
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Trend parameter' = calculated
+		mode: import
+		source =
+				{
+				    ("Trend chart", NAMEOF('Calculation group 2'[Trend chart]), 0)
+				}
+
+	annotation PBI_Id = 21f560020b054873a3d9a3b50e7959f7
+

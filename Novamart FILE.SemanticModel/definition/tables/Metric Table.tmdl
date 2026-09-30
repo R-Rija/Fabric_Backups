@@ -1,0 +1,19 @@
+table 'Metric Table'
+	isHidden
+	lineageTag: 8a76a33e-83d5-4942-946f-a7e1985e5a51
+
+	column metric
+		isHidden
+		lineageTag: e38acc62-090f-4ce6-9c0f-a2347bd5ead3
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [metric]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Metric Table' = calculated
+		mode: import
+		source = DATATABLE("metric",STRING,{{"Sales"},{"Units"}})
+
+	annotation PBI_Id = aff44dbc6df64bc4858d91ec4ca8d062
+

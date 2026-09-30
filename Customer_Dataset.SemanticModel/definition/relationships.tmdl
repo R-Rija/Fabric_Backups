@@ -1,0 +1,15 @@
+relationship 4e46e82c-ed01-4976-8e5e-0a53b622a5b6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: customer_master_data.RegistrationDate
+	toColumn: LocalDateTable_f54cadb7-8a9b-4e91-85c8-09bdea9a4567.Date
+
+relationship 959007f6-e546-47bc-b92e-84deb5b44bd8
+	joinOnDateBehavior: datePartOnly
+	fromColumn: customer_master_data.LastLoginDate
+	toColumn: LocalDateTable_6184d288-195a-4324-a2a9-05353d69496a.Date
+
+relationship d1e5fa73-bc3d-46a7-b034-b96834932e41
+	joinOnDateBehavior: datePartOnly
+	fromColumn: customer_master_data.LastPurchaseDate
+	toColumn: LocalDateTable_f972c375-33ff-410c-ab87-8cf26934ec77.Date
+
