@@ -1,0 +1,5 @@
+// KQL script
+// Use management commands in this script to configure your database items, such as tables, functions, materialized views, and more.
+
+
+.create-merge table live_weather_stream (dateTime:string, description:string, iconCode:dynamic, hasPrecipitation:bool, temperature:dynamic, realFeelTemperature:dynamic, realFeelTemperatureShade:dynamic, relativeHumidity:long, dewPoint:dynamic, wind:dynamic, windGust:dynamic, uvIndex:long, uvIndexDescription:string, visibility:dynamic, obstructionsToVisibility:string, cloudCover:long, cloudCeiling:dynamic, pressure:dynamic, pressureTendency:dynamic, pastTwentyFourHourTemperatureDeparture:string, apparentTemperature:dynamic, windChillTemperature:dynamic, wetBulbTemperature:dynamic, precipitationSummary:dynamic, temperatureSummary:dynamic, daytime:bool, location:dynamic, locationName:string) 

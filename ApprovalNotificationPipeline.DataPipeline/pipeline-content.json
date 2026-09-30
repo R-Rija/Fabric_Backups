@@ -1,0 +1,10 @@
+{
+  "properties": {
+    "activities": [],
+    "parameters": {
+      "PlanId": {
+        "type": "string"
+      }
+    }
+  }
+}
