@@ -1,0 +1,15 @@
+relationship 8da84f29-c08a-4399-8d7e-007c0fbd4cb8
+	joinOnDateBehavior: datePartOnly
+	fromColumn: order_transactions.OrderDate
+	toColumn: LocalDateTable_4e44e889-5e77-4028-8806-e35f3dcc4afa.Date
+
+relationship 9cc47f0d-c4d3-4a78-940b-31a4ee10d1f2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: order_transactions.DeliveryDate
+	toColumn: LocalDateTable_59efadb2-9854-4484-aba7-37e0b3829e1f.Date
+
+relationship c1fb86fb-ffa5-4532-a04f-81a87c2872ff
+	joinOnDateBehavior: datePartOnly
+	fromColumn: order_transactions.RefundDate
+	toColumn: LocalDateTable_b393f9dd-6300-40c8-8e89-9685904cd96b.Date
+

@@ -1,0 +1,330 @@
+table order_transactions
+	lineageTag: 4cebfb08-4a65-4ab9-9641-debaf0f20e18
+
+	column OrderID
+		dataType: string
+		lineageTag: 001c2aa0-8504-4a27-a805-b5aa0d5ea91d
+		summarizeBy: none
+		sourceColumn: OrderID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerID
+		dataType: string
+		lineageTag: 63263263-6575-442a-9229-7f04280618a9
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductID
+		dataType: string
+		lineageTag: c0722e1c-e766-4337-9750-3691f01fbe95
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductCategory
+		dataType: string
+		lineageTag: 652e9001-87a3-42a1-b7b7-f19d332bf4c1
+		summarizeBy: none
+		sourceColumn: ProductCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductSubCategory
+		dataType: string
+		lineageTag: af87eec8-f5e7-421c-a611-ab7b4209b4af
+		summarizeBy: none
+		sourceColumn: ProductSubCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d9d20fd5-2175-474d-abad-561184c95e80
+		summarizeBy: none
+		sourceColumn: OrderDate
+
+		variation Variation
+			isDefault
+			relationship: 8da84f29-c08a-4399-8d7e-007c0fbd4cb8
+			defaultHierarchy: LocalDateTable_4e44e889-5e77-4028-8806-e35f3dcc4afa.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column OrderTime
+		dataType: dateTime
+		formatString: Long Time
+		lineageTag: d3fc0416-1ed5-4f3e-bfb6-c65f54d71f4c
+		summarizeBy: none
+		sourceColumn: OrderTime
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Time
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 1f960560-3e52-4437-ac1a-dda1760974bc
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column UnitPrice
+		dataType: int64
+		formatString: 0
+		lineageTag: 2fe8ef4b-352e-42a0-96c6-0d89f4fa5412
+		summarizeBy: sum
+		sourceColumn: UnitPrice
+
+		annotation SummarizationSetBy = Automatic
+
+	column Subtotal
+		dataType: int64
+		formatString: 0
+		lineageTag: 2ffa4ca3-2438-4aa4-9413-36c62fa90552
+		summarizeBy: sum
+		sourceColumn: Subtotal
+
+		annotation SummarizationSetBy = Automatic
+
+	column DiscountPercent
+		dataType: int64
+		formatString: 0
+		lineageTag: 041f2d37-06a7-40de-ae6a-1110f5c6bff5
+		summarizeBy: sum
+		sourceColumn: DiscountPercent
+
+		annotation SummarizationSetBy = Automatic
+
+	column DiscountAmount
+		dataType: int64
+		formatString: 0
+		lineageTag: 4d38e50e-79bb-4932-bc8b-f97e87114190
+		summarizeBy: sum
+		sourceColumn: DiscountAmount
+
+		annotation SummarizationSetBy = Automatic
+
+	column CouponCode
+		dataType: string
+		lineageTag: e3ba1464-c36e-4ba5-9f1b-855b36d8af39
+		summarizeBy: none
+		sourceColumn: CouponCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column TaxPercent
+		dataType: int64
+		formatString: 0
+		lineageTag: ef2af081-7cfa-42e2-a585-cc354560d35f
+		summarizeBy: sum
+		sourceColumn: TaxPercent
+
+		annotation SummarizationSetBy = Automatic
+
+	column TaxAmount
+		dataType: int64
+		formatString: 0
+		lineageTag: 2c2602ab-3507-4ed3-86f6-7b1df2b5e1e2
+		summarizeBy: sum
+		sourceColumn: TaxAmount
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShippingFee
+		dataType: int64
+		formatString: 0
+		lineageTag: 736b6767-48cb-40ca-aafa-083b628d6977
+		summarizeBy: sum
+		sourceColumn: ShippingFee
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderAmount
+		dataType: int64
+		formatString: 0
+		lineageTag: 0307beb4-e9d6-4bef-865c-51c050f8e7d4
+		summarizeBy: sum
+		sourceColumn: OrderAmount
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: 983c0b23-762e-4e58-a6b3-49acae673245
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column PaymentMethod
+		dataType: string
+		lineageTag: 8c60f16c-57b5-46e8-989d-d326df0cb16a
+		summarizeBy: none
+		sourceColumn: PaymentMethod
+
+		annotation SummarizationSetBy = Automatic
+
+	column PaymentStatus
+		dataType: string
+		lineageTag: cde13023-d0bb-41dc-951c-b4704c0a4d38
+		summarizeBy: none
+		sourceColumn: PaymentStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column TransactionID
+		dataType: string
+		lineageTag: 1708d3ad-e6a0-4aaf-bb15-4692f502099a
+		summarizeBy: none
+		sourceColumn: TransactionID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Channel
+		dataType: string
+		lineageTag: 9b62aae7-1af7-4754-9e30-cea92a89820c
+		summarizeBy: none
+		sourceColumn: Channel
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeviceType
+		dataType: string
+		lineageTag: 1a0a2f8d-d0fc-490f-b4ff-e3e1cc328622
+		summarizeBy: none
+		sourceColumn: DeviceType
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: b368f665-e0ab-4a82-a9f5-82e0fc1a3e1d
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		lineageTag: ee0fbe3f-cc20-4fc9-a2ca-e15cfa8efa08
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pincode
+		dataType: int64
+		formatString: 0
+		lineageTag: 75996260-f678-491a-a905-8fae9278cc75
+		summarizeBy: sum
+		sourceColumn: Pincode
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeliveryPartner
+		dataType: string
+		lineageTag: cf66bbe4-0615-4050-bf81-a356f96e9157
+		summarizeBy: none
+		sourceColumn: DeliveryPartner
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeliveryDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 14b36c0b-f864-48b4-a92a-9f9d9d45e71f
+		summarizeBy: none
+		sourceColumn: DeliveryDate
+
+		variation Variation
+			isDefault
+			relationship: 9cc47f0d-c4d3-4a78-940b-31a4ee10d1f2
+			defaultHierarchy: LocalDateTable_59efadb2-9854-4484-aba7-37e0b3829e1f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ReturnReason
+		dataType: string
+		lineageTag: 2f6bc8c9-1ad5-4e97-ae19-0c40d205b915
+		summarizeBy: none
+		sourceColumn: ReturnReason
+
+		annotation SummarizationSetBy = Automatic
+
+	column RefundAmount
+		dataType: int64
+		formatString: 0
+		lineageTag: 2b506b92-e8f0-41ec-9619-b5039add1899
+		summarizeBy: sum
+		sourceColumn: RefundAmount
+
+		annotation SummarizationSetBy = Automatic
+
+	column RefundDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 1ece6be4-aac8-4d13-a9a1-0b597411ce72
+		summarizeBy: none
+		sourceColumn: RefundDate
+
+		variation Variation
+			isDefault
+			relationship: c1fb86fb-ffa5-4532-a04f-81a87c2872ff
+			defaultHierarchy: LocalDateTable_b393f9dd-6300-40c8-8e89-9685904cd96b.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CustomerRating
+		dataType: int64
+		formatString: 0
+		lineageTag: fa5db2ad-659f-4a40-b520-9bf7170bc4a1
+		summarizeBy: sum
+		sourceColumn: CustomerRating
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsFirstOrder
+		dataType: string
+		lineageTag: 5afcddc0-033a-43ed-997b-5d199415e1f0
+		summarizeBy: none
+		sourceColumn: IsFirstOrder
+
+		annotation SummarizationSetBy = Automatic
+
+	column Index
+		dataType: int64
+		formatString: 0
+		lineageTag: 0eb312df-0aa9-4a65-9151-a0be2af6a637
+		summarizeBy: sum
+		sourceColumn: Index
+
+		annotation SummarizationSetBy = Automatic
+
+	partition order_transactions = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\RijaRavichandran\Downloads\order_transactions.csv"),[Delimiter=",", Columns=33, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"OrderID", type text}, {"CustomerID", type text}, {"ProductID", type text}, {"ProductCategory", type text}, {"ProductSubCategory", type text}, {"OrderDate", type date}, {"OrderTime", type time}, {"Quantity", Int64.Type}, {"UnitPrice", Int64.Type}, {"Subtotal", Int64.Type}, {"DiscountPercent", Int64.Type}, {"DiscountAmount", Int64.Type}, {"CouponCode", type text}, {"TaxPercent", Int64.Type}, {"TaxAmount", Int64.Type}, {"ShippingFee", Int64.Type}, {"OrderAmount", Int64.Type}, {"Status", type text}, {"PaymentMethod", type text}, {"PaymentStatus", type text}, {"TransactionID", type text}, {"Channel", type text}, {"DeviceType", type text}, {"City", type text}, {"State", type text}, {"Pincode", Int64.Type}, {"DeliveryPartner", type text}, {"DeliveryDate", type date}, {"ReturnReason", type text}, {"RefundAmount", Int64.Type}, {"RefundDate", type date}, {"CustomerRating", Int64.Type}, {"IsFirstOrder", type text}}),
+				    #"Added Index" = Table.AddIndexColumn(#"Changed Type", "Index", 1, 1, Int64.Type)
+				in
+				    #"Added Index"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

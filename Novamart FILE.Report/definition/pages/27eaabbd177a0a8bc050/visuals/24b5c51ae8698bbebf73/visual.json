@@ -1,0 +1,56 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "24b5c51ae8698bbebf73",
+  "position": {
+    "x": 978.97150343924011,
+    "y": 150.93350802489354,
+    "z": 10002,
+    "height": 150.93350802489354,
+    "width": 362.65967900425807,
+    "tabOrder": 10002
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FACT_SALES"
+                    }
+                  },
+                  "Property": "Active Customer"
+                }
+              },
+              "queryRef": "FACT_SALES.Active Customer",
+              "nativeQueryRef": "Active Customer"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "FACT_SALES"
+                  }
+                },
+                "Property": "Active Customer"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

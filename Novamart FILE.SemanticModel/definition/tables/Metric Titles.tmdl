@@ -1,0 +1,24 @@
+table 'Metric Titles'
+	lineageTag: 777c65f0-278d-4061-8f24-e9b24fa70438
+
+	column Column
+		formatString: 0
+		lineageTag: 955746a7-1221-4a98-bbfd-ee036dfd0587
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Metric Titles' = calculated
+		mode: import
+		source = ```
+				
+				SELECTCOLUMNS(
+				    'Measure',
+				    "Metric", 
+				)
+				```
+
+	annotation PBI_Id = e284f4ab56ea432d99625f6c840a99aa
+

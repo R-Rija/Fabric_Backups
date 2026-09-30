@@ -1,0 +1,42 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-IN
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["DIM_CHANNEL","DIM_CUSTOMERS","DIM_PRODUCT","FACT_SALES","DIM_STORE","REFRESH_STATUS","RangeStart","RangeEnd","Last_Refresh"]
+
+annotation PBI_ProTooling = ["CalcGroup"]
+
+ref table DIM_CHANNEL
+ref table DIM_CUSTOMERS
+ref table DateTableTemplate_05b01c0f-6aba-4c70-9002-8d04522c8575
+ref table DIM_PRODUCT
+ref table FACT_SALES
+ref table DIM_STORE
+ref table REFRESH_STATUS
+ref table Date_Dimension
+ref table Time_Table
+ref table Measure
+ref table 'Period table'
+ref table 'Metric Table'
+ref table 'Calculation group'
+ref table Last_Refresh
+ref table LocalDateTable_3636ceee-42ef-4fc1-85fc-7ce5e5a4dcc2
+ref table 'Metric Selected'
+ref table 'Calculation group 2'
+ref table 'Trend parameter'
+ref table 'Metric Titles'
+ref table test
+ref table 'Calculation group 3'
+ref table 'waterfall table'
+ref table RFM_Table
+ref table LocalDateTable_e41bc3cc-d543-4509-ba70-f7520db1c2f3
+
+ref cultureInfo en-US
+

@@ -1,0 +1,46 @@
+table test
+	lineageTag: 8bf7f81e-0e3b-45fb-93f3-dcb525c0df22
+
+	measure 'Customer Category' =
+			
+			IF(
+			    [Total Discount] > 150000,
+			    "High Discount",
+			    "Normal"
+			)
+		lineageTag: 341fd1d4-dfe3-4ec8-99ba-63595739501f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure w2 = CALCULATE([Revenue],DATEADD(Date_Dimension[Date],-14,DAY))
+		lineageTag: 0dc8d045-f8e3-4ac6-9dc8-1ce62725a86a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure w3 = CALCULATE([Revenue],DATEADD(Date_Dimension[Date],-21,DAY))
+		lineageTag: ec937d51-3f5b-4016-93ef-3a29f3aad074
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure w4 = CALCULATE([Revenue],DATEADD(Date_Dimension[Date],-28,DAY))
+		lineageTag: 43dcbea4-b001-46d4-9d2c-4855c7ead8a1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Column
+		formatString: 0
+		lineageTag: 7a864a41-cbf4-453a-9734-708985c63515
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition test = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 938f0754c7d0451abb91e4b0d14dbb38
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

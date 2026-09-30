@@ -1,0 +1,250 @@
+table customer_master_data
+	lineageTag: c4757dc4-83de-4c67-b96f-ec2036622f70
+
+	column CustomerID
+		dataType: string
+		lineageTag: 1848680a-844e-45c6-8331-c975aee528fc
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerName
+		dataType: string
+		lineageTag: 3e90bcb6-0cca-42fe-987f-0aee170f1081
+		summarizeBy: none
+		sourceColumn: CustomerName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		lineageTag: 6fab3a0a-7afe-413f-89af-bbbac71ed2f7
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column Age
+		dataType: int64
+		formatString: 0
+		lineageTag: 9885b832-6b12-416b-a234-ac5261cf3c3a
+		summarizeBy: sum
+		sourceColumn: Age
+
+		annotation SummarizationSetBy = Automatic
+
+	column Email
+		dataType: string
+		lineageTag: 90e7e62e-778b-44de-b677-07b8c1498722
+		summarizeBy: none
+		sourceColumn: Email
+
+		annotation SummarizationSetBy = Automatic
+
+	column PhoneNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: 87e941fc-680c-430f-9d32-6947577dbdac
+		summarizeBy: sum
+		sourceColumn: PhoneNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: 8b7f56bd-c934-4077-8ee7-f55cf4e6e6d4
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		lineageTag: f8adbee9-a53f-4c99-8f64-9602b9019b80
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: 58821e0d-79ec-433a-86bb-f47084ff4aad
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pincode
+		dataType: int64
+		formatString: 0
+		lineageTag: f8fe4cc0-2119-4281-820c-1edc68ec74aa
+		summarizeBy: sum
+		sourceColumn: Pincode
+
+		annotation SummarizationSetBy = Automatic
+
+	column Occupation
+		dataType: string
+		lineageTag: 4b39a4f5-6055-4ba3-b69f-78e18fa9e478
+		summarizeBy: none
+		sourceColumn: Occupation
+
+		annotation SummarizationSetBy = Automatic
+
+	column AnnualIncome
+		dataType: int64
+		formatString: 0
+		lineageTag: 28e11b24-6df5-4095-9ef5-d5c524f94797
+		summarizeBy: sum
+		sourceColumn: AnnualIncome
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegistrationDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: b7a12430-a82f-41e4-ac7b-0f9706cfc3be
+		summarizeBy: none
+		sourceColumn: RegistrationDate
+
+		variation Variation
+			isDefault
+			relationship: 4e46e82c-ed01-4976-8e5e-0a53b622a5b6
+			defaultHierarchy: LocalDateTable_f54cadb7-8a9b-4e91-85c8-09bdea9a4567.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CustomerSegment
+		dataType: string
+		lineageTag: 735fa75f-27a9-491e-b104-d196826ae894
+		summarizeBy: none
+		sourceColumn: CustomerSegment
+
+		annotation SummarizationSetBy = Automatic
+
+	column LifetimeValue
+		dataType: int64
+		formatString: 0
+		lineageTag: 09fb2279-7003-4901-90d6-24aaeb2d559f
+		summarizeBy: sum
+		sourceColumn: LifetimeValue
+
+		annotation SummarizationSetBy = Automatic
+
+	column TotalOrders
+		dataType: int64
+		formatString: 0
+		lineageTag: 099669e7-c1b3-4304-a68a-9fecf19ed629
+		summarizeBy: sum
+		sourceColumn: TotalOrders
+
+		annotation SummarizationSetBy = Automatic
+
+	column TotalSpent
+		dataType: int64
+		formatString: 0
+		lineageTag: a06cecda-d05c-49b1-96af-ad19fdbcbbe5
+		summarizeBy: sum
+		sourceColumn: TotalSpent
+
+		annotation SummarizationSetBy = Automatic
+
+	column PreferredCategory
+		dataType: string
+		lineageTag: 55ed90b9-af6d-4e9f-92c7-9237b26fdce0
+		summarizeBy: none
+		sourceColumn: PreferredCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column PreferredPaymentMethod
+		dataType: string
+		lineageTag: 118803dc-36bc-479d-9c81-40382a0eb958
+		summarizeBy: none
+		sourceColumn: PreferredPaymentMethod
+
+		annotation SummarizationSetBy = Automatic
+
+	column LoyaltyTier
+		dataType: string
+		lineageTag: 9c47049b-dcee-4be7-88cc-08a633a2967c
+		summarizeBy: none
+		sourceColumn: LoyaltyTier
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsActive
+		dataType: string
+		lineageTag: c00e6ba5-70ba-424b-9061-8971633a0453
+		summarizeBy: none
+		sourceColumn: IsActive
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChurnRisk
+		dataType: string
+		lineageTag: 19baf331-68ac-45f2-a16e-2ab436c2637a
+		summarizeBy: none
+		sourceColumn: ChurnRisk
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastLoginDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 9aa963fa-22ee-4225-b173-6d8a61937d87
+		summarizeBy: none
+		sourceColumn: LastLoginDate
+
+		variation Variation
+			isDefault
+			relationship: 959007f6-e546-47bc-b92e-84deb5b44bd8
+			defaultHierarchy: LocalDateTable_6184d288-195a-4324-a2a9-05353d69496a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column LastPurchaseDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 99ee450d-ace4-4087-a29d-5df9d338f66a
+		summarizeBy: none
+		sourceColumn: LastPurchaseDate
+
+		variation Variation
+			isDefault
+			relationship: d1e5fa73-bc3d-46a7-b034-b96834932e41
+			defaultHierarchy: LocalDateTable_f972c375-33ff-410c-ab87-8cf26934ec77.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Index
+		dataType: int64
+		formatString: 0
+		lineageTag: 01723dff-10e7-4ff4-87a5-6dd3e4315421
+		summarizeBy: sum
+		sourceColumn: Index
+
+		annotation SummarizationSetBy = Automatic
+
+	partition customer_master_data = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\RijaRavichandran\Downloads\customer_master_data.csv"),[Delimiter=",", Columns=24, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"CustomerID", type text}, {"CustomerName", type text}, {"Gender", type text}, {"Age", Int64.Type}, {"Email", type text}, {"PhoneNumber", Int64.Type}, {"City", type text}, {"State", type text}, {"Country", type text}, {"Pincode", Int64.Type}, {"Occupation", type text}, {"AnnualIncome", Int64.Type}, {"RegistrationDate", type date}, {"CustomerSegment", type text}, {"LifetimeValue", Int64.Type}, {"TotalOrders", Int64.Type}, {"TotalSpent", Int64.Type}, {"PreferredCategory", type text}, {"PreferredPaymentMethod", type text}, {"LoyaltyTier", type text}, {"IsActive", type text}, {"ChurnRisk", type text}, {"LastLoginDate", type date}, {"LastPurchaseDate", type date}}),
+				    #"Added Index" = Table.AddIndexColumn(#"Changed Type", "Index", 1, 1, Int64.Type)
+				in
+				    #"Added Index"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

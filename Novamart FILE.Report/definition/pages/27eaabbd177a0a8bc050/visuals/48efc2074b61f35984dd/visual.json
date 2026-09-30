@@ -1,0 +1,89 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "48efc2074b61f35984dd",
+  "position": {
+    "x": 733.704552898788,
+    "y": 400.39305601048147,
+    "z": 10005,
+    "height": 318.63740583033081,
+    "width": 666.62299377661316,
+    "tabOrder": 10005
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DIM_CUSTOMERS"
+                    }
+                  },
+                  "Property": "AGEGROUP"
+                }
+              },
+              "queryRef": "DIM_CUSTOMERS.AGEGROUP",
+              "nativeQueryRef": "AGEGROUP",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FACT_SALES"
+                    }
+                  },
+                  "Property": "Annual Spend"
+                }
+              },
+              "queryRef": "FACT_SALES.Annual Spend",
+              "nativeQueryRef": "Annual Spend"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "DIM_CUSTOMERS"
+                  }
+                },
+                "Property": "AGEGROUP"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

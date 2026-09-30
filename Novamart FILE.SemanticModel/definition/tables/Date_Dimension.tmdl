@@ -1,0 +1,157 @@
+table Date_Dimension
+	lineageTag: 89b6d019-2dbd-457d-94db-3c7c7cb404b8
+	dataCategory: Time
+
+	column Date
+		isKey
+		formatString: General Date
+		lineageTag: fa12f453-82a9-4527-949c-774764752764
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		lineageTag: edf16dff-bbd8-4b69-85aa-08cb2a87bd07
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		formatString: 0
+		lineageTag: d8880611-c204-4d8f-bf3d-889fb5683a06
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column week
+		formatString: 0
+		lineageTag: a7e7b84d-876d-4220-b811-fdb082075793
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [week]
+
+		annotation SummarizationSetBy = Automatic
+
+	column yearmonth
+		lineageTag: a07668f0-dacf-4e85-ad55-ba7df2814f64
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [yearmonth]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quater
+		lineageTag: ef228150-d3af-4af4-aee6-d5ec06d8febb
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Quater]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthName
+		lineageTag: a2c55f53-1bb0-4481-97d4-d7f282bc7548
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MonthName]
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		formatString: 0
+		lineageTag: f7b77425-5a8b-446b-971d-d253f0759ffb
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [DateKey]
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearMonthNUm
+		formatString: 0
+		lineageTag: 3edad0e9-930b-45e1-b827-ce1cfa11ed6b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [YearMonthNUm]
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayName
+		lineageTag: c7626e44-8cf3-4aef-bd5c-426d16ab97ac
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [DayName]
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsWeekday
+		lineageTag: e32b6953-05ae-495f-a4fa-cffb73fbba6d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [IsWeekday]
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekNum
+		formatString: 0
+		lineageTag: 724312e8-58ff-45b3-961f-97ea303f5ac2
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [WeekNum]
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayofWeek
+		lineageTag: a6b6280b-7a58-4be7-8c76-efc3e0d44b6d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [DayofWeek]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Date col' = left(Date_Dimension[Date],10)
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 06b8a611-b08f-41a9-aabc-864c5e841036
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Week Format'
+		lineageTag: 57390296-2f37-4bcc-ac1b-5372c82e6777
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Week Format]
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekName =
+			
+			var wk = Date_Dimension[week]
+			RETURN
+			SWITCH(TRUE(),wk= 1 ,"Mon", wk = 2, "Tue",wk = 3,"Wed",wk = 4,"Thu",wk = 5, "Fir",wk = 6, "Sat",wk = 7,"Sun")
+		lineageTag: 6882ce6c-ea64-4e04-9ddf-dd8da5cb91d9
+		summarizeBy: none
+		sortByColumn: week
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Date_Dimension = calculated
+		mode: import
+		source =
+				
+				VAR MinDate = MIN('FACT_SALES'[TIMESTAMP])
+				VAR MaxDate = MAX('FACT_SALES'[TIMESTAMP])
+				VAR DateColumn = CALENDAR(MinDate, MaxDate)
+				RETURN
+				ADDCOLUMNS(DateColumn,"DateKey",year([Date])* 10000 + MONTH([Date])*100 + DAY([Date]), "Year",Format([Date],"YYYY"),"Month" , MONTH([Date]), "MonthName",FORMAT([Date],"MMMM"),"week",WEEKDAY([Date]),"yearmonth", FORMAT([Date],"YY") & "-"& FORMAT([Date],"MM"), "Quater",  "Q" & QUARTER([Date]),"YearMonthNUm",YEAR([Date])* 100 + MONTH([Date]),"DayName",FORMAT([Date],"MMM")& " " & FORMAT([Date],"DD"),"WeekNum",WEEKNUM([Date]),"Week Format","Y" & FORMAT([Date],"YY") & "M" & FORMAT([date],"MM") & "W" & WEEKNUM([Date]),"DayofWeek",FORMAT([Date],"MMM") & WEEKDAY([Date],2),"IsWeekday",if(WEEKDAY([Date],2)> 5,"Weekend","Weekday")
+				)
+
+	annotation PBI_Id = a0fe15eda1664ebcb73e9c0ce19b321d
+

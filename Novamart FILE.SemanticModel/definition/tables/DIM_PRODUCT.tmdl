@@ -1,0 +1,204 @@
+table DIM_PRODUCT
+	lineageTag: 84371775-b63f-40d2-adfd-4e066f9a586e
+
+	measure 'active customer %' = DIVIDE(DISTINCTCOUNT(FACT_SALES[CUSTOMERID]),CALCULATE(FACT_SALES[Active Customer],all(DIM_CUSTOMERS[SEGMENT])))
+		displayFolder: bar chart
+		lineageTag: eadaa633-0e60-435b-a042-0c0c25e211b3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure zero = 0
+		displayFolder: bar chart
+		lineageTag: c3a097ad-9c54-454b-b773-e7015f9544f5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ASP
+		dataType: string
+		lineageTag: 4ae6bf0a-4668-4b05-a258-7a6496d99463
+		summarizeBy: none
+		sourceColumn: ASP
+
+		annotation SummarizationSetBy = Automatic
+
+	column Brand_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: 0a4116e9-08d0-4dbc-bf3f-4f53fcd91cbe
+		summarizeBy: none
+		sourceColumn: Brand_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Price_Band =
+			
+			SWITCH(
+			    TRUE(),
+			    [ASP] <= 500, "₹0–₹500",
+			    [ASP] > 500 && [ASP] <= 2000, "₹501–₹2K",
+			    [ASP] > 2000 && [ASP] <= 10000, "₹2K–₹10K",
+			    [ASP] > 10000 && [ASP] <= 30000, "₹10K–₹30K",
+			    [ASP] > 30000, "₹30K+"
+			)
+		lineageTag: a311dc78-abb7-4934-98a8-8aa62f9461a6
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Price_Band_Sort =
+			
+			SWITCH(
+			    TRUE(),
+			    [Price_Band] = "₹0–₹500", 1,
+			    [Price_Band] = "₹501–₹2K", 2,
+			    [Price_Band] = "₹2K–₹10K", 3,
+			    [Price_Band] = "₹10K–₹30K", 4,
+			    [Price_Band] = "₹30K+", 5
+			)
+		formatString: 0
+		lineageTag: fa21cc70-7f6b-4bbc-a7f2-cfaaef138391
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Distribution_Pct = ```
+			
+			DIVIDE(
+			    DISTINCTCOUNT(DIM_PRODUCT[PRODUCTID]), 
+			    CALCULATE(DISTINCTCOUNT(DIM_PRODUCT[PRODUCTID]), ALL(DIM_PRODUCT[Price_Band]))
+			)
+			```
+		lineageTag: d1665dc4-da26-469c-bd90-3dfeb020e542
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Brand_Name
+		dataType: string
+		lineageTag: f7a69f31-0e5a-404b-82a5-8712d640d2cc
+		summarizeBy: none
+		sourceColumn: Brand_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column PRODUCTID
+		dataType: string
+		lineageTag: 1c027047-aba8-4b30-a477-9cb3ba71e6cd
+		summarizeBy: none
+		sourceColumn: PRODUCTID
+
+		annotation SummarizationSetBy = Automatic
+
+	column PRODUCTNAME
+		dataType: string
+		lineageTag: 35f3a30e-bbc2-4b9b-882f-c29c155159cf
+		summarizeBy: none
+		sourceColumn: PRODUCTNAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column SUBCATEGORY
+		dataType: string
+		lineageTag: 41ec71fe-765b-4d84-9e76-b5d22ae66916
+		summarizeBy: none
+		sourceColumn: SUBCATEGORY
+
+		annotation SummarizationSetBy = Automatic
+
+	column DEPARTMENTID
+		dataType: string
+		lineageTag: f8aa5bb7-126a-426d-8b63-5083720402ce
+		summarizeBy: none
+		sourceColumn: DEPARTMENTID
+
+		annotation SummarizationSetBy = Automatic
+
+	column DEPARTMENTNAME
+		dataType: string
+		lineageTag: 5b5e7241-8e44-4b24-b095-9418ac3fc275
+		summarizeBy: none
+		sourceColumn: DEPARTMENTNAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column BRANDID
+		dataType: string
+		lineageTag: cd2cb2ed-7168-4df3-8f9c-b1e9d84425d8
+		summarizeBy: none
+		sourceColumn: BRANDID
+
+		annotation SummarizationSetBy = Automatic
+
+	column BRANDNAME
+		dataType: string
+		lineageTag: 005c6e9f-28d9-475a-9fbd-05a5475639e4
+		summarizeBy: none
+		sourceColumn: BRANDNAME
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DIM_PRODUCT = m
+		mode: import
+		source =
+				let
+				    Source = SharePoint.Files(
+				        "https://gwcteq-my.sharepoint.com/personal/rija_ravichandran_gwcdata_ai",
+				        [ApiVersion = 15]
+				    ),
+				
+				    File = Source{[Name = "DimProduct.csv"]}[Content],
+				
+				    DIM_PRODUCT_Table =
+				        Table.PromoteHeaders(
+				            Csv.Document(
+				                File,
+				                [
+				                    Delimiter = ",",
+				                    Encoding = 65001,
+				                    QuoteStyle = QuoteStyle.Csv
+				                ]
+				            ),
+				            [PromoteAllScalars = true]
+				        ),
+				
+				    #"Renamed Columns" =
+				        Table.RenameColumns(
+				            DIM_PRODUCT_Table,
+				            {
+				                {"ProductID", "PRODUCTID"},
+				                {"ProductName", "PRODUCTNAME"},
+				                {"Subcategory", "SUBCATEGORY"},
+				                {"DepartmentID", "DEPARTMENTID"},
+				                {"DepartmentName", "DEPARTMENTNAME"},
+				                {"BrandID", "BRANDID"},
+				                {"BrandName", "BRANDNAME"},
+				                {"ASP", "ASP"}
+				            },
+				            MissingField.Ignore
+				        ),
+				
+				    #"Added Brand_Name" =
+				        Table.AddColumn(
+				            #"Renamed Columns",
+				            "Brand_Name",
+				            each "Novamart",
+				            type text
+				        ),
+				
+				    #"Added Brand_ID" =
+				        Table.AddColumn(
+				            #"Added Brand_Name",
+				            "Brand_ID",
+				            each 1,
+				            Int64.Type
+				        )
+				
+				in
+				    #"Added Brand_ID"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,885 @@
+table Measure
+	lineageTag: aa9f9b68-d33f-45c9-a980-c3221b7bf167
+
+	measure 'TD Revenue' = [Revenue]
+		displayFolder: Weekly measure
+		lineageTag: 359e15ae-7608-467a-88bf-12d86678caaa
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure dataavilabilty = max(FACT_SALES[TIMESTAMP])
+		formatString: General Date
+		displayFolder: refresh
+		lineageTag: d8522efd-0d33-4a2c-9b42-2944986334bc
+
+	measure 'TD Unints' = [UnitSold]
+		displayFolder: Weekly measure
+		lineageTag: 924d94aa-3292-4543-a79c-dd267df24b0a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'LW Revenue' =
+			
+			VAR prevsales =
+			CALCULATE([Revenue],DATEADD(Date_Dimension[Date],-7,DAY))
+			RETURN
+			COALESCE(prevsales,0)
+		displayFolder: Weekly measure
+		lineageTag: f311430b-aa8c-4397-832c-a6b53a935655
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'LW Units' = CALCULATE([UnitSold],DATEADD(Date_Dimension[Date],-7,DAY))
+		displayFolder: Weekly measure
+		lineageTag: 3bc09d83-99f8-480d-b404-29e68d4a30ef
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'vLW% Revenue' = DIVIDE([vLW Revenue],[LW Revenue])
+		displayFolder: Weekly measure
+		lineageTag: 6985c5ba-1412-4dde-9dad-bbb2b5c940d3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'vLW Revenue' = [TD Revenue] - [LW Revenue]
+		displayFolder: Weekly measure
+		lineageTag: 4d879ca5-be12-4b2d-b0d9-bfa6007d219f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'vLW Unites' = [TD Unints] - [LW Units]
+		displayFolder: Weekly measure
+		lineageTag: 0f13e995-abe8-4bc9-a48f-26b0520a1e4a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'vLW% Unites' = DIVIDE([vLW Unites],[LW Units])
+		displayFolder: Weekly measure
+		lineageTag: f22f2a8b-3501-4642-98c4-e1f5095ead7e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg.L4W Revenue' =
+			
+			VAR w1 = CALCULATE([Revenue],DATEADD(Date_Dimension[Date],-7,DAY))
+			VAR w2 = CALCULATE([Revenue],DATEADD(Date_Dimension[Date],-14,DAY))
+			VAR w3 = CALCULATE([Revenue],DATEADD(Date_Dimension[Date],-21,DAY))
+			VAR w4 = CALCULATE([Revenue],DATEADD(Date_Dimension[Date],-28,DAY))
+			RETURN
+			DIVIDE(w1 + w2 + w3 + w4 , 4)
+		displayFolder: Weekly measure
+		lineageTag: afd82dcc-9d0f-4f07-83e7-2da675d327c5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg.L4W Units' =
+			
+			VAR w1 = CALCULATE([UnitSold],DATEADD(Date_Dimension[Date],-7,DAY))
+			VAR w2 = CALCULATE([UnitSold],DATEADD(Date_Dimension[Date],-14,DAY))
+			VAR w3 = CALCULATE([UnitSold],DATEADD(Date_Dimension[Date],-21,DAY))
+			VAR w4 = CALCULATE([UnitSold],DATEADD(Date_Dimension[Date],-28,DAY))
+			RETURN
+			DIVIDE(w1 + w2 + w3 + w4 , 4)
+		displayFolder: Weekly measure
+		lineageTag: 6f692ada-59bf-4539-a1b7-537c72c50a61
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'vL4W Revenue' = [TD Revenue] - [Avg.L4W Revenue]
+		displayFolder: Weekly measure
+		lineageTag: a50874a5-53dc-458b-85b1-4a9a2d7e5dc0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'vL4W Units' = [TD Unints] - [Avg.L4W Units]
+		displayFolder: Weekly measure
+		lineageTag: 69a75139-1ca2-4fba-8c73-7dd0fe313078
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'vL4W% Revenue' = DIVIDE([vL4W Revenue],[Avg.L4W Revenue])
+		displayFolder: Weekly measure
+		lineageTag: 6ba684a2-a374-4a04-ad7b-4de92611acc5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'vL4W% Units' = DIVIDE([vL4W Units],[Avg.L4W Units])
+		displayFolder: Weekly measure
+		lineageTag: 938b3591-57c0-477a-a00d-e828231ff7ba
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Display value' =
+			
+			VAR periodselected = SELECTEDVALUE('Period table'[Period])
+			VAR metricselected = SELECTEDVALUE('Metric Table'[metric])
+			RETURN
+			SWITCH(TRUE(),
+			periodselected = "TD" && metricselected = "Sales",[Revenue],
+			periodselected = "TD" && metricselected = "Units",[UnitSold],
+			periodselected = "LW" && metricselected = "Sales",[LW Revenue],
+			periodselected = "LW" && metricselected = "Units",[LW Units],
+			periodselected = "vLW" && metricselected = "Sales",[vLW Revenue],
+			periodselected = "vLW" && metricselected = "Units",[vLW Unites],
+			periodselected = "vLW%" && metricselected = "Sales",[vL4W% Revenue],
+			periodselected = "vLW%" && metricselected = "Units",[vL4W% Units],
+			periodselected = "Avg.L4W" && metricselected = "Sales",[Avg.L4W Revenue],
+			periodselected = "Avg.L4W" && metricselected = "Units",[Avg.L4W Units],
+			periodselected = "vL4W" && metricselected = "Sales",[vL4W Revenue],
+			periodselected = "vL4W" && metricselected = "Units",[vL4W Units],
+			periodselected = "vL4W%" && metricselected = "Sales",[vL4W% Revenue],
+			periodselected = "vL4W%" && metricselected = "Units",[vL4W% Units])
+		displayFolder: Weekly measure
+		lineageTag: 7b2f3785-a24c-41f2-89b4-58254cbdf1cd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'vL4W% rev format' =
+			
+			VAR v = [vL4W% Revenue]
+			RETURN
+			SWITCH(TRUE(),
+			ISBLANK(v),BLANK(),
+			v > 0, UNICHAR(9650) & " " & "0.00",
+			v< 0, UNICHAR(9660) & " " & "0.00", "0.00")
+		displayFolder: Formating
+		lineageTag: 63254066-7cf7-41dc-b814-4bdd91ea567d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'vL4W% units format' =
+			
+			VAR v = [vL4W% Units]
+			RETURN
+			SWITCH(TRUE(),
+			ISBLANK(v),BLANK(),
+			v > 0, UNICHAR(9650) & " " & "0.00",
+			v< 0, UNICHAR(9660) & " " & "0.00", "0.00")
+		displayFolder: Formating
+		lineageTag: 9e4dae97-731f-490c-8e61-5db75e633091
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'vLW% rev formating' =
+			
+			VAR v = [vLW% Revenue]
+			RETURN
+			SWITCH(TRUE(),
+			ISBLANK(v),BLANK(),
+			v > 0, UNICHAR(9650) & " " & "0.00",
+			v< 0, UNICHAR(9660) & " " & "0.00", "0.00")
+		displayFolder: Formating
+		lineageTag: baf314e4-d9a1-49e5-8078-798df59441ef
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'vLW% units formating' =
+			
+			VAR v = [vLW% Unites]
+			RETURN
+			SWITCH(TRUE(),
+			ISBLANK(v),BLANK(),
+			v > 0, UNICHAR(9650) & " " & "0.00",
+			v< 0, UNICHAR(9660) & " " & "0.00", "0.00")
+		displayFolder: Formating
+		lineageTag: 255b0887-4237-4a31-9ff5-dcda789d6474
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'last week sales' =
+			
+			VAR lw = [LW Revenue]
+			RETURN
+			IF(ISBLANK(lw),BLANK(),
+			"vs RS " & FORMAT(lw / 1000000000,"0.00") & " bn LW")
+		displayFolder: KPI\last week
+		lineageTag: 4d193a61-f8f4-476a-bfba-cecf3f0fd3ca
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'rev per change' = ```
+			
+			VAR cur = [Revenue]
+			VAR pre = [LW Revenue]
+			VAR div = DIVIDE(cur - pre,pre)
+			VAR formattedValue = FORMAT(div, "+ 0.00 %;-0.00 %;0.00 %") 
+			RETURN
+			    SWITCH(TRUE(),
+			        div > 0, UNICHAR(129157) & " " & formattedValue,
+			        div < 0, UNICHAR(129158) & " " & formattedValue,
+			        "0.00 %"
+			    )
+			```
+		displayFolder: KPI\percentage change
+		lineageTag: 1af1040a-c529-4625-9fb3-83aa88b28e89
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'last week customer' =
+			
+			VAR tw = [Active Customer]
+			VAR lw = CALCULATE(tw,DATEADD(Date_Dimension[Date],-7,DAY))
+			RETURN
+			IF(ISBLANK(lw),BLANK(),
+			"vs " & FORMAT(lw,"0.00") & "  LW")
+		displayFolder: KPI\last week
+		lineageTag: 280954bb-c4de-4200-96d4-fb43acfaf2cb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'last week asp' =
+			
+			VAR tw = [ASP]
+			VAR lw = CALCULATE(tw,DATEADD(Date_Dimension[Date],-7,DAY))
+			RETURN
+			IF(ISBLANK(lw),BLANK(),
+			"vs " & FORMAT(lw,"0.00") & " LW")
+		displayFolder: KPI\last week
+		lineageTag: dd8b77c1-2137-4c7c-a9f7-53b4fab0e848
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'last week Anual Spend' =
+			
+			VAR tw = [Annual Spend]
+			VAR lw = CALCULATE(tw,DATEADD(Date_Dimension[Date],-7,DAY))
+			RETURN
+			IF(ISBLANK(lw),BLANK(),
+			"vs RS " & FORMAT(lw ,"0.00") & " LW")
+		displayFolder: KPI\last week
+		lineageTag: 725d3516-d547-4a16-996a-601f0d83aaa2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'last week avg customer units' =
+			
+			VAR tw = [Avg Customer Unites]
+			VAR lw = CALCULATE(tw,DATEADD(Date_Dimension[Date],-7,DAY))
+			RETURN
+			IF(ISBLANK(lw),BLANK(),
+			"vs RS " & FORMAT(lw ,"0.00") & " LW")
+		displayFolder: KPI\last week
+		lineageTag: aa3a7292-ade9-4f3f-ab3a-1d6b7760e3b7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'last week avg frq' =
+			
+			VAR tw = [Avg frequency]
+			VAR lw = CALCULATE(tw,DATEADD(Date_Dimension[Date],-7,DAY))
+			RETURN
+			IF(ISBLANK(lw),BLANK(),
+			"vs " & FORMAT(lw,"0.00") & " LW")
+		displayFolder: KPI\last week
+		lineageTag: b5082d6e-2fca-4fef-a34e-d259ed2657cc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'last week basket value' =
+			
+			VAR tw = [Basket Value]
+			VAR lw = CALCULATE(tw,DATEADD(Date_Dimension[Date],-7,DAY))
+			RETURN
+			IF(ISBLANK(lw),BLANK(),
+			"vs RS " & FORMAT(lw,"0.00") & " LW")
+		displayFolder: KPI\last week
+		lineageTag: 8aef0377-fd5d-4bdc-9507-45777997bfc7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'last week IPB' =
+			
+			VAR tw = [IPB]
+			VAR lw = CALCULATE(tw,DATEADD(Date_Dimension[Date],-7,DAY))
+			RETURN
+			IF(ISBLANK(lw),BLANK(),
+			"vs " & FORMAT(lw,"0.00") & " LW")
+		displayFolder: KPI\last week
+		lineageTag: 635a21db-2003-46c7-b138-67d6e77de624
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'last week Transaction count' =
+			
+			VAR tw = [Transaction Count]
+			VAR lw = CALCULATE(tw,DATEADD(Date_Dimension[Date],-7,DAY))
+			RETURN
+			IF(ISBLANK(lw),BLANK(),
+			"vs " & FORMAT(lw,"0.00") & " LW")
+		displayFolder: KPI\last week
+		lineageTag: 16bb95c8-2a59-4bed-b660-a1b60211bc19
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'last week unit sold' =
+			
+			VAR tw = [UnitSold]
+			VAR lw = CALCULATE(tw,DATEADD(Date_Dimension[Date],-7,DAY))
+			RETURN
+			IF(ISBLANK(lw),BLANK(),
+			"vs " & FORMAT(lw,"0.00") & " LW")
+		displayFolder: KPI\last week
+		lineageTag: 2de2400e-05c0-415a-8245-4bde2d913192
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'annual spend per change' = ```
+			
+			VAR cur = [Annual Spend]
+			VAR pre = CALCULATE([Annual Spend], REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+			VAR div = DIVIDE(cur - pre, pre)
+			VAR formattedValue = FORMAT(div, "+ 0.00 %;-0.00 %;0.00 %") 
+			RETURN
+			SWITCH(TRUE(),
+			div > 0, UNICHAR(129157) & " " & formattedValue,
+			div < 0, UNICHAR(129158) & " " & formattedValue,"0.00 %")
+			```
+		displayFolder: KPI\percentage change
+		lineageTag: eb6ab8de-bbc9-44ec-a4fd-80498c9248f0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'asp per change' = ```
+			
+			VAR cur = [ASP]
+			VAR pre = CALCULATE([ASP], REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+			VAR div = DIVIDE(cur - pre, pre)
+			VAR formattedValue = FORMAT(div, "+ 0.00 %;-0.00 %;0.00 %") 
+			RETURN
+			SWITCH(TRUE(),
+			div > 0, UNICHAR(129157) & " " & formattedValue,
+			div < 0, UNICHAR(129158) & " " & formattedValue,"0.00 %")
+			```
+		displayFolder: KPI\percentage change
+		lineageTag: 13e8ce97-b0eb-419e-8b97-524b26c147e8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'avg customer units per change' = ```
+			
+			VAR cur = [Avg Customer Unites]
+			VAR pre = CALCULATE([Avg Customer Unites], REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+			VAR div = DIVIDE(cur - pre, pre)
+			VAR formattedValue = FORMAT(div, "+ 0.00 %;-0.00 %;0.00 %") 
+			RETURN
+			SWITCH(TRUE(),
+			div > 0, UNICHAR(129157) & " " & formattedValue,
+			div < 0, UNICHAR(129158) & " " & formattedValue,"0.00 %")
+			```
+		displayFolder: KPI\percentage change
+		lineageTag: 471ffe7e-cff5-4cb4-9994-039a362b8f9c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'avg frq per change' = ```
+			
+			VAR cur = [Avg frequency]
+			VAR pre = CALCULATE([Avg frequency], REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+			VAR div = DIVIDE(cur - pre, pre)
+			VAR formattedValue = FORMAT(div, "+ 0.00 %;-0.00 %;0.00 %") 
+			RETURN
+			SWITCH(TRUE(),
+			div > 0, UNICHAR(129157) & " " & formattedValue,
+			div < 0, UNICHAR(129158) & " " & formattedValue,"0.00 %")
+			```
+		displayFolder: KPI\percentage change
+		lineageTag: 1e8a62ad-ad1b-49ae-875b-abe552dbf562
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'basket value per change' = ```
+			
+			VAR cur = [Basket Value]
+			VAR pre = CALCULATE([Basket Value], REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+			VAR div = DIVIDE(cur - pre, pre)
+			VAR formattedValue = FORMAT(div, "+ 0.00 %;-0.00 %;0.00 %") 
+			RETURN
+			SWITCH(TRUE(),
+			div > 0, UNICHAR(129157) & " " & formattedValue,
+			div < 0, UNICHAR(129158) & " " & formattedValue,"0.00 %")
+			```
+		displayFolder: KPI\percentage change
+		lineageTag: 371bc9ea-085f-4e5c-8165-e19b746b385d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'active customer per change' = ```
+			
+			VAR cur = [Active Customer]
+			VAR pre = CALCULATE([Active Customer], REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+			VAR div = DIVIDE(cur - pre, pre)
+			VAR formattedValue = FORMAT(div, "+ 0.00 %;-0.00 %;0.00 %") 
+			RETURN
+			SWITCH(TRUE(),
+			div > 0, UNICHAR(129157) & " " & formattedValue,
+			div < 0, UNICHAR(129158) & " " & formattedValue,"0.00 %")
+			```
+		displayFolder: KPI\percentage change
+		lineageTag: 24a27664-0bfe-41ce-83c9-9a4272c07500
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'transaction count per change' = ```
+			
+			VAR cur = [Transaction Count]
+			VAR pre = CALCULATE([Transaction Count], REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+			VAR div = DIVIDE(cur - pre, pre)
+			VAR formattedValue = FORMAT(div, "+ 0.00 %;-0.00 %;0.00 %") 
+			RETURN
+			SWITCH(TRUE(),
+			div > 0, UNICHAR(129157) & " " & formattedValue,
+			div < 0, UNICHAR(129158) & " " & formattedValue,"0.00 %")
+			```
+		displayFolder: KPI\percentage change
+		lineageTag: 2889659a-a5ae-49bb-abc1-cdd90f927b79
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'unit sold per change' = ```
+			
+			VAR cur = [UnitSold]
+			VAR pre = CALCULATE([UnitSold], REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+			VAR div = DIVIDE(cur - pre, pre)
+			VAR formattedValue = FORMAT(div, "+ 0.00 %;-0.00 %;0.00 %") 
+			RETURN
+			SWITCH(TRUE(),
+			div > 0, UNICHAR(129157) & " " & formattedValue,
+			div < 0, UNICHAR(129158) & " " & formattedValue,"0.00 %")
+			```
+		displayFolder: KPI\percentage change
+		lineageTag: 5d2b028a-d144-4b43-bc9c-9c20c99681cf
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'IPB per change' = ```
+			
+			VAR cur = [IPB]
+			VAR pre = CALCULATE([IPB], REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+			VAR div = DIVIDE(cur - pre, pre)
+			VAR formattedValue = FORMAT(div, "+ 0.00 %;-0.00 %;0.00 %") 
+			RETURN
+			SWITCH(TRUE(),
+			div > 0, UNICHAR(129157) & " " & formattedValue,
+			div < 0, UNICHAR(129158) & " " & formattedValue,"0.00 %")
+			```
+		displayFolder: KPI\percentage change
+		lineageTag: e17ef340-4350-4a11-8806-2056be818a61
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'rev col' =
+			
+			VAR cur = [Revenue]
+			VAR pre = [LW Revenue]
+			VAR div = DIVIDE(cur - pre,pre)
+			RETURN
+			SWITCH(TRUE(),div > 0, "Green", div < 0 ,"Red","Grey")
+		lineageTag: 318ba729-4ae5-4dca-8aea-5e4f8b8895ba
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'active customer col' =
+			
+			VAR cur = [Active Customer]
+			VAR pre = CALCULATE([Active Customer], REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+			VAR div = DIVIDE(cur - pre, pre)
+			RETURN
+			SWITCH(TRUE(),
+			div < 0 , "Green",div < 0 , "Red" , "Grey")
+		displayFolder: refresh
+		lineageTag: d4f8fc35-42cd-4a31-ab36-12775f6c0d40
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'asp col' =
+			
+			VAR cur = [ASP]
+			VAR pre = CALCULATE([ASP], REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+			VAR div = DIVIDE(cur - pre, pre)
+			RETURN
+			SWITCH(TRUE(),
+			div > 0 , "Green",div < 0 , "Red" , "Grey")
+		displayFolder: refresh
+		lineageTag: e31e1bf8-51e1-45b6-a640-f327123e6f14
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'avg frq' =
+			
+			VAR cur = [Avg frequency]
+			VAR pre = CALCULATE([Avg frequency], REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+			VAR div = DIVIDE(cur - pre, pre)
+			RETURN
+			SWITCH(TRUE(),
+			div > 0 , "Green",div < 0 , "Red" , "Grey")
+		displayFolder: refresh
+		lineageTag: 70c60629-557a-4684-997a-29ce68bbfe22
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'annual spend col' =
+			
+			VAR cur = [Annual Spend]
+			VAR pre = CALCULATE([Annual Spend], REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+			VAR div = DIVIDE(cur - pre, pre)
+			RETURN
+			SWITCH(TRUE(),
+			div > 0 , "Green",div < 0 , "Red" , "Grey")
+		displayFolder: refresh
+		lineageTag: 28d78429-7e94-43ab-9bdb-6987db144ce4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'avg customer units' =
+			
+			VAR cur = [Avg Customer Unites]
+			VAR pre = CALCULATE([Avg Customer Unites], REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+			VAR div = DIVIDE(cur - pre, pre)
+			RETURN
+			SWITCH(TRUE(),
+			div > 0 , "Green",div < 0 , "Red" , "Grey")
+		displayFolder: refresh
+		lineageTag: 0577d2f7-5e91-4616-a7bc-93fc0836da49
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'basket value col' = ```
+			
+			VAR cur = [Basket Value]
+			VAR pre = CALCULATE([Basket Value], REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+			VAR div = DIVIDE(cur - pre, pre)
+			RETURN
+			SWITCH(TRUE(),
+			div > 0 , "Green",div < 0 , "Red" , "Grey")
+			
+			```
+		displayFolder: refresh
+		lineageTag: 727f85c5-64a3-4957-96ea-882b71c23b99
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'IPB col' =
+			
+			VAR cur = [IPB]
+			VAR pre = CALCULATE([IPB], REMOVEFILTERS(Date_Dimension), DATEADD(Date_Dimension[Date], -7, DAY))
+			VAR div = DIVIDE(cur - pre, pre)
+			RETURN
+			SWITCH(TRUE(),
+			div > 0 , "Green",div < 0 , "Red" , "Grey")
+		displayFolder: refresh
+		lineageTag: c7d46ba3-7e9c-45cb-94fc-c14707cc222f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'transaction count col' =
+			
+			VAR cur = [Transaction Count]
+			VAR pre = CALCULATE([Transaction Count],REMOVEFILTERS(Date_Dimension),DATEADD(Date_Dimension[Date],-7,DAY))
+			VAR div = DIVIDE(cur - pre,pre)
+			RETURN
+			SWITCH(TRUE(),div > 0, "Green", div < 0 ,"Red",
+			"Grey")
+		displayFolder: refresh
+		lineageTag: 43a2082c-e40f-4bb0-9326-e9b8382b97f9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'unit sold col' =
+			
+			VAR cur = [UnitSold]
+			VAR pre = CALCULATE([UnitSold],REMOVEFILTERS(Date_Dimension),DATEADD(Date_Dimension[Date],-7,DAY))
+			VAR div = DIVIDE(cur - pre,pre)
+			RETURN
+			SWITCH(TRUE(),div > 0, "Green", div < 0 ,"Red",
+			"Grey")
+		displayFolder: refresh
+		lineageTag: a5c9c18d-39dc-4a2c-bb6c-bdd410140f6b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'vlw% col' = if (SELECTEDMEASURE() = [vL4W% Revenue],if([vLW% Revenue]>=0,"#007A33", "#D32F2F"))
+		lineageTag: 4d1c708e-8de9-4686-8c68-a1e30766c594
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Revenue KPI' = CALCULATE(SUM(FACT_SALES[SALESAMOUNT]),REMOVEFILTERS(Date_Dimension[Date]))
+		lineageTag: 29c4352b-e763-4628-a6e7-b73514082076
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Show No Data' = 1
+		lineageTag: 7da02e00-413b-4d31-969b-df8690b62790
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'data avilability' = ```
+			
+			var maxdate = CALCULATE(max(FACT_SALES[TIMESTAMP]),all(Date_Dimension),all(FACT_SALES))
+			var hr = HOUR(maxdate)
+			var endhour = SWITCH(TRUE(),hr<3,"3 am",hr<6,"6 am",hr<9,"9 am",hr<12,"12 pm",hr<15,"3 pm",hr<18,"6 pm",hr<21,"9 pm","12 am")
+			var formatteddate = FORMAT(maxdate,"dd-mm-yy")
+			return 
+			"Data Available untill " & formatteddate & " " & endhour
+			```
+		lineageTag: 0449db46-3a0c-4444-b17b-5b07e968c392
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Color % Revenue' =
+			
+			if(SELECTEDVALUE('Calculation group'[Metric]) in {"vLW %","vL4W %"}, [Revenue], BLANK())
+			
+			/*
+			VAR metricname = SELECTEDVALUE('Calculation group'[Metric])
+			VAR _Current = [Revenue]
+			VAR _LW = CALCULATE([Revenue], REMOVEFILTERS('Calculation group'), 'Calculation group'[Metric] = "LW")
+			VAR _L4W = CALCULATE([Revenue], REMOVEFILTERS('Calculation group'), 'Calculation group'[Metric] = "Avg.L4W")
+			VAR _vLW_Pct = COALESCE(DIVIDE(_Current - _LW, _LW), 0)
+			VAR _vL4W_Pct = COALESCE(DIVIDE(_Current - _L4W, _L4W), 0)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    metricname = "vLW %" && _vLW_Pct > 0, 100,
+			    metricname = "vLW %" && _vLW_Pct < 0, -100,
+			    metricname = "vL4W %" && _vL4W_Pct > 0, 100,
+			    metricname = "vL4W %" && _vL4W_Pct < 0, -100,
+			    BLANK()
+			)
+			*/
+		lineageTag: 4c8f9fa1-0431-4821-a6f7-9ede3a162053
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Color % Units' =
+			if (SELECTEDVALUE('Calculation group'[Metric]) in {"vLW %","vL4W %"},[UnitSold],BLANK())
+			
+			 /*
+			VAR metricname = SELECTEDVALUE('Calculation group'[Metric])
+			VAR _Current = [Unit Sold]
+			VAR _LW = CALCULATE([Unit Sold], REMOVEFILTERS('Calculation group'), 'Calculation group'[Metric] = "LW")
+			VAR _L4W = CALCULATE([Unit Sold], REMOVEFILTERS('Calculation group'), 'Calculation group'[Metric] = "Avg.L4W")
+			VAR _vLW_Pct = COALESCE(DIVIDE(_Current - _LW, _LW), 0)
+			VAR _vL4W_Pct = COALESCE(DIVIDE(_Current - _L4W, _L4W), 0)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    metricname = "vLW %" && _vLW_Pct > 0, 100,
+			    metricname = "vLW %" && _vLW_Pct < 0, -100,
+			    metricname = "vL4W %" && _vL4W_Pct > 0, 100,
+			    metricname = "vL4W %" && _vL4W_Pct < 0, -100,
+			    BLANK()
+			)
+			*/
+		lineageTag: 0561a06a-1340-48ab-be42-97402ddfa1a4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Global Max Marker' = ```
+			
+			VAR AllVisibleBuckets = ALLSELECTED('Time_Table'[TimeFrame])
+			VAR MaxValue = MAXX(AllVisibleBuckets, SELECTEDMEASURE())
+			VAR CurrentValue = SELECTEDMEASURE()
+			RETURN 
+			IF(CurrentValue = MaxValue, CurrentValue, BLANK())
+			```
+		lineageTag: 02919c6b-8e1e-4005-afde-2a5f28b1e581
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Global Min Marker' = ```
+			
+			VAR AllVisibleBuckets = ALLSELECTED('Time_Table'[TimeFrame])
+			VAR MinValue = MINX(AllVisibleBuckets, SELECTEDMEASURE())
+			VAR CurrentValue = SELECTEDMEASURE()
+			RETURN 
+			IF(CurrentValue = MinValue, CurrentValue, BLANK())
+			```
+		lineageTag: 4e44cce0-5cf7-49b2-bbc3-45ba7698142f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Dynamic Label Color' = ```
+			
+			VAR AllVisibleBuckets = ALLSELECTED('Time_Table'[TimeFrame])
+			VAR MaxValue = MAXX(AllVisibleBuckets, SELECTEDMEASURE())
+			VAR MinValue = MINX(AllVisibleBuckets, SELECTEDMEASURE())
+			VAR CurrentValue = SELECTEDMEASURE()
+			RETURN 
+			    SWITCH(
+			        TRUE(),
+			        CurrentValue = MaxValue, "#107C41",
+			        CurrentValue = MinValue, "#A80000",
+			        "#FFFFFF00"
+			    )
+			```
+		displayFolder: Formating
+		lineageTag: 43096875-d32b-4e45-92f4-15b70d4d175a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'show last vw' = "vs LW"
+		displayFolder: refresh
+		lineageTag: 56ec046d-cd13-4db8-80bd-cecece5d154e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Trend Title' =
+			
+			CONCATENATEX('Metric Selected','Metric Selected'[Metric Selected],", ") &" Period Trend Analysis"
+		lineageTag: c2fc4dc8-8d66-4ee5-ad57-c667f332f555
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'vl4w %' = ```
+			VAR _SelectedMetric = SELECTEDVALUE('Calculation group'[Metric])
+			VAR TD = SELECTEDMEASURE()
+			VAR LW = CALCULATE(
+			    SELECTEDMEASURE(), 
+			    REMOVEFILTERS(Date_Dimension), 
+			    DATEADD(Date_Dimension[Date], -7, DAY)
+			)
+			
+			RETURN
+			IF(
+			    _SelectedMetric = "vLW %", 
+			    IF(ISBLANK(TD), BLANK(), DIVIDE(TD - LW, LW)),
+			    BLANK()
+			)
+			```
+		displayFolder: Weekly measure
+		lineageTag: efdb133b-c0da-4cd4-88be-0c1e387d73cd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure RFM_Recency = DATEDIFF(max(FACT_SALES[DATE]),TODAY(),DAY)
+		displayFolder: test for color
+		lineageTag: 1e3d1d1a-cbe2-4c6e-bc13-d7a1e902b67a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Color % Revenue v4lw' =
+			
+			VAR metricname = SELECTEDVALUE('Calculation group'[Metric])
+			VAR _Current = [Revenue]
+			VAR _LW = CALCULATE([Revenue], REMOVEFILTERS('Calculation group'), 'Calculation group'[Metric] = "LW")
+			VAR _L4W = CALCULATE([Revenue], REMOVEFILTERS('Calculation group'), 'Calculation group'[Metric] = "Avg.L4W")
+			VAR _vLW_Pct = COALESCE(DIVIDE(_Current - _LW, _LW), 0)
+			VAR _vL4W_Pct = COALESCE(DIVIDE(_Current - _L4W, _L4W), 0)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    metricname = "vL4W %" && _vL4W_Pct > 0, 100,
+			    metricname = "vL4W %" && _vL4W_Pct < 0, -100,
+			    BLANK()
+			)
+		displayFolder: test for color
+		lineageTag: 6e4949f0-52c3-4324-adb3-209da0bd53bc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'LW ASP' = CALCULATE([ASP],DATEADD(Date_Dimension[Date],-7,DAY))
+		displayFolder: test for color
+		lineageTag: 0341c49e-1ce5-455b-825b-9c68eb1c00ac
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'mix effects' = ([Revenue] - [LW Revenue]) - [volume effect] - [Price effects]
+		displayFolder: test for color
+		lineageTag: 698132a3-5b1e-4389-b4ab-9f60c88be783
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Price effects' = ([ASP] - [LW ASP]) * [LW Units]
+		displayFolder: test for color
+		lineageTag: 48baacd7-171b-4b7c-9273-843147b4f19b
+
+	measure 'revenue value' = SWITCH(SELECTEDVALUE('waterfall table'[component]),"LW Revenue",[LW Revenue],"Volume effect",[volume effect],"Price effect",[Price effects],"Mix effect","TD Revenue",[Revenue])
+		displayFolder: test for color
+		lineageTag: c9a4ce62-7922-432d-bae6-571be0efef87
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Color Units' =
+			
+			VAR v = [UnitSold]
+			
+			RETURN
+			SWITCH(
+			    TRUE(),
+			
+			    ABS(v) < 1 && v > 0, "#008000",
+			
+			    ABS(v) < 1 && v < 0, "#FF0000",
+			
+			    BLANK()
+			)
+		displayFolder: test for color
+		lineageTag: 4e56c5f3-93c7-472a-8874-74a5df2c8a18
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'volume effect' = ([UnitSold] - [LW Units]) * [LW ASP]
+		displayFolder: test for color
+		lineageTag: 03e43084-b173-47c4-b9f0-e964f6111b83
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Price_Band = ```
+			
+			  SWITCH(TRUE(),
+			[ASP]<500,"₹0-500",
+			 [ASP]<2000,"₹501-2K",
+			[ASP]<10000,"₹2K-10K",
+			  "₹30K+")
+			```
+		displayFolder: detail page
+		lineageTag: 6592bca4-307f-4f42-8f6d-c63551d0f8b4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Price_Band_Sort =
+			
+			SWITCH(
+			    TRUE(),
+			    [Price_Band] = "₹0–₹500", 1,
+			    [Price_Band] = "₹501–₹2K", 2,
+			    [Price_Band] = "₹2K–₹10K", 3,
+			    [Price_Band] = "₹10K–₹30K", 4,
+			    [Price_Band] = "₹30K+", 5
+			)
+		displayFolder: detail page
+		lineageTag: d5564c0a-9fc8-4b93-ae8b-f2b9f6cd1f12
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure prd_distribution = DIVIDE(DISTINCTCOUNT(DIM_PRODUCT[PRODUCTID]),CALCULATE(DISTINCTCOUNT(DIM_PRODUCT[PRODUCTID]),ALL('dataset'[Price_Band])))
+		displayFolder: detail page
+		lineageTag: 6ee068b7-60bf-4572-bce4-862a0ab239b8
+
+	column 'Trend chart'
+		displayFolder: detail page
+		lineageTag: 6c17fc0b-9176-498a-a402-258c47cc2701
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calculation group 2[Trend chart]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		formatString: 0
+		lineageTag: 12f486e2-4064-436d-9cfe-e1b16891850d
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calculation group 2[Ordinal]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Measure = calculated
+		mode: import
+		source = ```
+				
+				
+				```
+
+	annotation PBI_Id = aa4255cf7bff40c3bd345a8a33483694
+

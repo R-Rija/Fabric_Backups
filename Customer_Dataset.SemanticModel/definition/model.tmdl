@@ -1,0 +1,21 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-IN
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["customer_master_data"]
+
+ref table customer_master_data
+ref table DateTableTemplate_a1a8cb8f-c90b-47d3-bdd2-fd0643ec005d
+ref table LocalDateTable_f54cadb7-8a9b-4e91-85c8-09bdea9a4567
+ref table LocalDateTable_6184d288-195a-4324-a2a9-05353d69496a
+ref table LocalDateTable_f972c375-33ff-410c-ab87-8cf26934ec77
+
+ref cultureInfo en-US
+

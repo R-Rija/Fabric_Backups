@@ -1,0 +1,90 @@
+table DIM_CUSTOMERS
+	lineageTag: 7af6c527-ba83-4324-abf9-7e798b36a3c5
+
+	column CUSTOMERID
+		dataType: string
+		lineageTag: dbe75bce-4e93-4af2-917d-90ba7e374935
+		summarizeBy: none
+		sourceColumn: CUSTOMERID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CUSTOMERNAME
+		dataType: string
+		lineageTag: 625b0b22-ef48-492a-999f-54bfa2dc1dc8
+		summarizeBy: none
+		sourceColumn: CUSTOMERNAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATE
+		dataType: string
+		lineageTag: 341480e3-b548-4509-9fc2-3a1fb39e6aef
+		summarizeBy: none
+		sourceColumn: STATE
+
+		annotation SummarizationSetBy = Automatic
+
+	column AGEGROUP
+		dataType: string
+		lineageTag: 27e66ba7-3b71-4e03-ae5d-7ab564c02827
+		summarizeBy: none
+		sourceColumn: AGEGROUP
+
+		annotation SummarizationSetBy = Automatic
+
+	column SEGMENT
+		dataType: string
+		lineageTag: 8f837c46-b863-416f-b14d-ff09dcf3cc70
+		summarizeBy: none
+		sourceColumn: SEGMENT
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DIM_CUSTOMERS = m
+		mode: import
+		source =
+				let
+				    Source = SharePoint.Files(
+				        "https://gwcteq-my.sharepoint.com/personal/rija_ravichandran_gwcdata_ai",
+				        [ApiVersion = 15]
+				    ),
+				
+				    File = Source{[Name = "DimCustomer.csv"]}[Content],
+				
+				    CSV =
+				        Csv.Document(
+				            File,
+				            [
+				                Delimiter = ",",
+				                Encoding = 65001,
+				                QuoteStyle = QuoteStyle.Csv
+				            ]
+				        ),
+				
+				    PromotedHeaders =
+				        Table.PromoteHeaders(
+				            CSV,
+				            [PromoteAllScalars = true]
+				        ),
+				
+				    #"Renamed Columns" =
+				        Table.RenameColumns(
+				            PromotedHeaders,
+				            {
+				                {"CustomerID","CUSTOMERID"},
+				                {"CustomerName","CUSTOMERNAME"},
+				                {"AgeGroup","AGEGROUP"},
+				                {"Segment","SEGMENT"},
+				                {"State","STATE"}
+				            },
+				            MissingField.Ignore
+				        )
+				
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

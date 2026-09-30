@@ -1,0 +1,10 @@
+relationship 29f19458-d1ef-4a21-a1a4-6f5853a778f4
+	joinOnDateBehavior: datePartOnly
+	fromColumn: product_catalog.LaunchDate
+	toColumn: LocalDateTable_22e6e5a1-92d4-4d49-aba5-2235e8dd2ee6.Date
+
+relationship b64bbfe8-0ea3-4090-875d-1f1b7da72c0f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: product_catalog.LastRestockDate
+	toColumn: LocalDateTable_428fd527-2895-4da6-a52d-90e986e21048.Date
+
