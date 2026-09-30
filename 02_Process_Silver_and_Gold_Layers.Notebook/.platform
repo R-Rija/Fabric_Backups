@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "02_Process_Silver_and_Gold_Layers"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "4ae95065-f62e-abfb-4974-c67549bb9902"
+  }
+}

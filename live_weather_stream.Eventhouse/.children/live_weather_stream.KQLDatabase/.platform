@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "KQLDatabase",
+    "displayName": "live_weather_stream"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "c845dd31-8908-9cc6-4c11-e1f91a65af17"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "KQLDatabase",
+    "displayName": "Retail_Realtime_DB_1"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "5152a018-3682-adae-49d3-1f9461c66670"
+  }
+}
